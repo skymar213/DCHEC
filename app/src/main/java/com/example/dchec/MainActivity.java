@@ -1,5 +1,6 @@
 package com.example.dchec;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -8,6 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private CardView utilisateurCard , associationCard;
     private TextView utilisateurTxt , associationTxt;
 
+    private FirebaseAuth firebaseAuth;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +38,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         utilisateurImage = findViewById(R.id.utilisateur_select);
         associationImage = findViewById(R.id.association_select);
         utilisateurCard = findViewById(R.id.utilisateur_card_view);
         associationCard = findViewById(R.id.association_card_view);
         utilisateurTxt = findViewById(R.id.utilisateur_txt);
         associationTxt = findViewById(R.id.association_txt);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
         utilisateurCard.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         sendUserToLogInActivity();
                     }
-                },250);
+                },200);
             }
         });
 
@@ -86,10 +100,44 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+        CheckingEmailVerificated();
+
+
+
+
+
+    }
+
+    private void CheckingEmailVerificated() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            if (firebaseAuth.getCurrentUser().isEmailVerified()){
+                sendUserToHomeActivity();
+            }else if( !firebaseAuth.getCurrentUser().isEmailVerified()){
+                sendUserToSetUpActivity();
+            }
+        }
     }
 
     private void sendUserToLogInActivity() {
         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
         startActivity(intent);
+
     }
+
+
+    private void sendUserToHomeActivity() {
+        Intent intent = new Intent(MainActivity.this,HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void sendUserToSetUpActivity() {
+        Intent setUpIntent = new Intent(MainActivity.this , setUpActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setUpIntent);
+        finish();
+    }
+
+
 }

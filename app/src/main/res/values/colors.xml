@@ -12,4 +12,8 @@
     <color name="main_color">#209FA6</color>
     <color name="white_page_color">#F7F6FF</color>
     <color name="hint_grey">#898989</color>
+    <color name="red">#FF9494</color>
+    <color name="account_green">#065256</color>
+    <color name="account_green_color_2">#28CAA1</color>
+
 </resources>
