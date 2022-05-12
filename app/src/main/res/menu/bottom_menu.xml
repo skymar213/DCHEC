@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/bottom_nav_home"
+        android:title="accueil"
+        android:icon="@drawable/accueil_ic">
+
+    </item>
+
+    <item android:id="@+id/bottom_nav_search"
+        android:title="Search"
+        android:icon="@drawable/search_ic"
+        >
+
+    </item>
+
+    <item android:id="@+id/bottom_place_holder"
+        android:enabled="false"
+        android:title="">
+    </item>
+
+
+    <item android:id="@+id/bottom_nav_messages"
+        android:title="Messages"
+        android:icon="@drawable/message_i">
+
+    </item>
+
+
+    <item android:id="@+id/bottom_nav_profile"
+        android:title="Profile"
+        android:icon="@drawable/profile_ic">
+    </item>
+
+
+
+
+
+
+</menu>

@@ -14,43 +14,30 @@
         <activity
             android:name=".HomeActivity"
             android:exported="true">
-        </activity>
-
-
-
-        <activity
-            android:name=".ForgetPassword"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:exported="true" />
-        <activity
-            android:name=".setUpActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:exported="true" >
-
-
-
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:exported="true">
-
-
-        </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Dchec.launcher"
-            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
+        <activity
+            android:name=".ForgetPassword"
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".setUpActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Dchec.launcher">
+        </activity>
+
     </application>
 
 </manifest>

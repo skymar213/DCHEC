@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "343696964671",
+    "firebase_url": "https://dchec-91f77-default-rtdb.firebaseio.com",
     "project_id": "dchec-91f77",
     "storage_bucket": "dchec-91f77.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "343696964671-hmff0edin97od2aiip9fauc7hv1jumav.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dchec",
+            "certificate_hash": "6fa1c1cc0d7513b049dc19c787f390bf956059c5"
+          }
+        },
         {
           "client_id": "343696964671-qgmjedg8tcvep8tkvlct111a0ppbo9cn.apps.googleusercontent.com",
           "client_type": 3

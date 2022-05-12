@@ -390,6 +390,7 @@
 
 
                     <ImageView
+                        android:id="@+id/facebook_sign_in"
 
                         android:layout_width="44dp"
                         android:layout_height="44dp"
@@ -400,6 +401,7 @@
                         android:src="@drawable/facebook_icon"></ImageView>
 
                     <ImageView
+                        android:id="@+id/google_sign_in"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
 
@@ -410,6 +412,8 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+
 
         </LinearLayout>
 

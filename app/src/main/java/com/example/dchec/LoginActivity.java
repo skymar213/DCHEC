@@ -1,6 +1,7 @@
 package com.example.dchec;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -15,21 +16,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+
 
 public class LoginActivity extends AppCompatActivity {
+    private static final int RC_SIGN_IN = 123;
     private TextView forgetPassword , titleText , qstText , choiceTxt ,recupirerTxt , annulerTxt ;
     private Button accountBtn;
     private TextInputLayout inputConfirmPassword ,inputPassword;
     private Boolean hasAccoount;
     private EditText userEmail , userPassword , userConfirmPassword ;
     private TextView loginEmailText , loginPasswordText ,confirmPasswordText ;
-    private ImageView shadowImage;
+    private ImageView shadowImage , googleSignIn ;
     private CardView passwordCard;
 
     private FirebaseAuth firebaseAuth , mAuth;
@@ -37,10 +53,14 @@ public class LoginActivity extends AppCompatActivity {
     boolean isProblem = false;
     private ProgressDialog progressDialog;
 
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        hasAccoount = true;
 
 
          forgetPassword = findViewById(R.id.forget_mtp);
@@ -48,30 +68,38 @@ public class LoginActivity extends AppCompatActivity {
          qstText = findViewById(R.id.qst_text);
          choiceTxt = findViewById(R.id.choice_txt);
          accountBtn = findViewById(R.id.account_btn);
+
          inputConfirmPassword = findViewById(R.id.confirm_password);
          inputPassword = findViewById(R.id.password_layout);
+
          userEmail = findViewById(R.id.user_email);
          userPassword = findViewById(R.id.user_password);
          userConfirmPassword = findViewById(R.id.user_confirm_password);
+
          loginEmailText = findViewById(R.id.login_email_text);
          loginPasswordText = findViewById(R.id.login_password_text);
          confirmPasswordText = findViewById(R.id.login_confirm_password_text);
+
          shadowImage = findViewById(R.id.shadow_page);
+
          passwordCard = findViewById(R.id.password_card);
          recupirerTxt = findViewById(R.id.recupirer);
          annulerTxt = findViewById(R.id.annuler);
+
+         googleSignIn = findViewById(R.id.google_sign_in);
+
 
          progressDialog = new ProgressDialog(this);
 
          firebaseAuth = FirebaseAuth.getInstance();
 
 
-         hasAccoount = true;
 
 
 
 
-            choiceTxt.setOnClickListener(new View.OnClickListener() {
+
+         choiceTxt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -98,10 +126,10 @@ public class LoginActivity extends AppCompatActivity {
                         hasAccoount = false;
                     }
                 }
-            });
+         });
 
 
-            accountBtn.setOnClickListener(new View.OnClickListener() {
+         accountBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (!hasAccoount){
@@ -110,33 +138,105 @@ public class LoginActivity extends AppCompatActivity {
                         AllowUserToLogIn();
                     }
                 }
-            });
+         });
 
-            forgetPassword.setOnClickListener(new View.OnClickListener() {
+         forgetPassword.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     shadowImage.setVisibility(View.VISIBLE);
                     passwordCard.setVisibility(View.VISIBLE);
                 }
-            });
+         });
 
-            annulerTxt.setOnClickListener(new View.OnClickListener() {
+         annulerTxt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     shadowImage.setVisibility(View.GONE);
                     passwordCard.setVisibility(View.GONE);
                 }
-            });
+         });
 
-            recupirerTxt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    sendToForgetPasswordActivity();
-                }
-            });
+         recupirerTxt.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 sendToForgetPasswordActivity();
+             }
+         });
 
 
 
+         googleSignInMethod();
+
+
+
+
+        googleSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signInGoogle();
+            }
+        });
+
+
+
+
+
+    }
+
+
+
+    private void googleSignInMethod(){
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("343696964671-qgmjedg8tcvep8tkvlct111a0ppbo9cn.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this , gso);
+    }
+
+    private void signInGoogle() {
+
+        Intent googleIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(googleIntent,RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                FireBaseAuthWithGoogle(account);
+            } catch (ApiException e){
+
+            }
+        }
+    }
+
+    private void FireBaseAuthWithGoogle(GoogleSignInAccount account){
+        AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        firebaseAuth.signInWithCredential(firebaseCredential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            sendUserToHomeActivity();
+
+                        } else {
+
+                            sendUserToLogInActivity();
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void sendUserToLogInActivity() {
+        Intent intent = new Intent(LoginActivity.this,LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void sendToForgetPasswordActivity() {
@@ -284,6 +384,8 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(setUpIntent);
         finish();
     }
+
+
 
     @Override
     protected void onStart() {

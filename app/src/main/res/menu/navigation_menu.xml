@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_home"
+        android:title="Accueil"
+        android:icon="@drawable/accueil_ic">
+    </item>
+
+    <item android:id="@+id/nav_profile"
+        android:title="Compte"
+        android:icon="@drawable/profile_ic">
+    </item>
+
+
+
+
+    <item android:id="@+id/nav_messages"
+        android:title="Messages"
+        android:icon="@drawable/message_i">
+
+    </item>
+
+    <item android:id="@+id/nav_save"
+        android:title="Enregistré"
+        android:icon="@drawable/ic_save_icon">
+
+    </item>
+
+
+   <item android:id="@+id/nav_location"
+        android:title="localisation"
+        android:icon="@drawable/ic_location">
+
+    </item>
+
+
+   <item android:id="@+id/nav_info"
+        android:title="Qui somme nous ?"
+        android:icon="@drawable/ic_info">
+
+    </item>
+
+   <item android:id="@+id/nav_logout"
+        android:title="Log out"
+        android:icon="@drawable/logout">
+
+    </item>
+
+
+
+
+
+</menu>
