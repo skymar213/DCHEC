@@ -24,4 +24,19 @@
 
 
     </style>
+
+    <style name="DialogSheetBottomTheme" parent="Theme.Design.BottomSheetDialog">
+
+        <item name="android:windowEnterAnimation"> @anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation"> @anim/slide_out_bottom</item>
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+
+    </style>
+
+    <style name="BottomSheetStyle" >
+        <item name="background">@drawable/transparent_background</item>
+
+    </style>
+
+
 </resources>
