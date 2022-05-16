@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,6 +51,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private static GoogleSignInAccount account;
 
+    private static FrameLayout container;
+    private static FrameLayout.LayoutParams lp;
+
 
 
     @Override
@@ -65,6 +69,11 @@ public class HomeActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.tool_bar);
+        container = findViewById(R.id.container);
+
+
+
+         lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
 
 
@@ -222,7 +231,7 @@ public class HomeActivity extends AppCompatActivity {
     private void menuUserSelected(MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.nav_profile :
+            case R.id.nav_account:
                 replaceFragment(new AccountFragment());
                 toolbar.setVisibility(View.GONE);
                 Toast.makeText(this, "compte", Toast.LENGTH_SHORT).show();
