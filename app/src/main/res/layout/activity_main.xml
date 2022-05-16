@@ -12,7 +12,6 @@
 
         android:layout_width="280dp"
         android:layout_height="250dp"
-        android:background="@drawable/side_form"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

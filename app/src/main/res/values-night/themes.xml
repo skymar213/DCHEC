@@ -19,7 +19,6 @@
     <style name="Theme.Dchec.launcher">
 
         <item name="android:windowFullscreen" >false</item>
-        <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
 
 

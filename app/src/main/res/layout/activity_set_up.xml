@@ -15,7 +15,6 @@
         android:id="@+id/shadow_page_setUp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shadow_page"
         android:elevation="5dp"
         android:visibility="gone">
 
@@ -98,7 +97,6 @@
                 <ImageView
                     android:layout_width="220dp"
                     android:layout_height="250dp"
-                    android:background="@drawable/forme_votre_compte"
 
                     app:layout_constraintEnd_toEndOf="parent">
 
