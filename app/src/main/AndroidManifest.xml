@@ -12,8 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dchec">
         <activity
+            android:name=".AddPostActivity"
+            android:parentActivityName=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,17 +32,19 @@
         <activity
             android:name=".setUpActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Dchec.launcher">
-        </activity>
-
+            android:theme="@style/Theme.Dchec.launcher"></activity>
+        <activity
+            android:name=".AccountActivity"
+            android:exported="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

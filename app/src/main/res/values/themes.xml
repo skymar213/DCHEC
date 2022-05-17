@@ -36,4 +36,8 @@
         <item name="background">@drawable/transparent_background</item>
 
     </style>
+
+    <style name="ToolbarColoredBackArrow" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:textColorSecondary">@color/nav_black</item>
+    </style>
 </resources>

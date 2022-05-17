@@ -56,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInOptions gso;
     private GoogleSignInClient mGoogleSignInClient;
 
+    static String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -280,15 +282,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                        if (firebaseAuth.getCurrentUser().isEmailVerified()) {
                             Toast.makeText(LoginActivity.this, "you are loged in", Toast.LENGTH_SHORT).show();
                             sendUserToHomeActivity();
                             progressDialog.dismiss();
-
-                        }else {
-                            progressDialog.dismiss();
-                            Toast.makeText(LoginActivity.this, "svp , verifier votre email", Toast.LENGTH_LONG).show();
-                        }
                     }else {
                         Toast.makeText(LoginActivity.this, "eurreur : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
@@ -308,7 +304,7 @@ public class LoginActivity extends AppCompatActivity {
     private void creatNewAccount() {
 
         String  email = userEmail.getText().toString();
-        String password = userPassword.getText().toString();
+        password = userPassword.getText().toString();
         String confirmPassword = userConfirmPassword.getText().toString();
 
         if (TextUtils.isEmpty(email)) {

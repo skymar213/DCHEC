@@ -9,9 +9,10 @@
     tools:context=".HomeActivity">
 
 <LinearLayout
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <include
@@ -45,6 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/container"
         tools:ignore="MissingConstraints">
 
 
@@ -83,6 +85,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
+            android:id="@+id/add_post_btn"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/main_color"
             android:elevation="5dp"
@@ -106,8 +109,8 @@
         android:layout_height="match_parent"
         app:itemTextColor="@color/black"
         android:layout_gravity="start"
-        android:background="@color/white_page_color"
         app:menu="@menu/navigation_menu"
+        android:background="@color/white_page_color"
         tools:ignore="MissingConstraints">
 
     </com.google.android.material.navigation.NavigationView>

@@ -112,11 +112,7 @@ public class MainActivity extends AppCompatActivity {
     private void CheckingEmailVerificated() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
-            if (firebaseAuth.getCurrentUser().isEmailVerified()){
                 sendUserToHomeActivity();
-            }else if( !firebaseAuth.getCurrentUser().isEmailVerified()){
-                sendUserToSetUpActivity();
-            }
         }
     }
 

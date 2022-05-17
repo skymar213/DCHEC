@@ -2,18 +2,26 @@ package com.example.dchec;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -82,6 +90,65 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ValidateAccountInfo();
+            }
+        });
+
 
     }
+
+    private void ValidateAccountInfo() {
+        String username = userName.getText().toString();
+        String usernickname = userNickName.getText().toString();
+        String userphonenumber = userPhoneNumber.getText().toString();
+        String userlocalisation = userLocalisation.getText().toString();
+        String userpassword = userPassword.getText().toString();
+
+
+        if (TextUtils.isEmpty(username)) {
+            Toast.makeText(AccountActivity.this, "svp verfiier votre nom", Toast.LENGTH_SHORT).show();
+        }else if (TextUtils.isEmpty(usernickname)){
+            Toast.makeText(AccountActivity.this, "svp verfiier votre prénom", Toast.LENGTH_SHORT).show();
+        }else if (TextUtils.isEmpty(userphonenumber)){
+            Toast.makeText(AccountActivity.this, "svp verfiier votre numéro", Toast.LENGTH_SHORT).show();
+        }else if (TextUtils.isEmpty(userpassword)){
+            Toast.makeText(AccountActivity.this, "svp verfiier votre mot de passe", Toast.LENGTH_SHORT).show();
+        }else {
+            UpdateUserInfo(username , usernickname , userphonenumber , userlocalisation , userpassword);
+        }
+    }
+
+    private void UpdateUserInfo(String username, String usernickname, String userphonenumber, String userlocalisation, String userpassword) {
+
+        HashMap userMap = new HashMap();
+        userMap.put("userName",username);
+        userMap.put("nickName",usernickname);
+        userMap.put("phoneNumber",userphonenumber);
+        userMap.put("localisation" , userlocalisation);
+        userMap.put("password" , userpassword);
+
+        accountUserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    sendUserToHomeActivity();
+                    Toast.makeText(AccountActivity.this, "vous avez changer votre info ", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(AccountActivity.this, "eurro occured : "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+    }
+
+    private void sendUserToHomeActivity() {
+        Intent intent = new Intent(AccountActivity.this , HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+
 }

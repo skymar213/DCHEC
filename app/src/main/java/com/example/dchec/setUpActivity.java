@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,7 +76,7 @@ public class setUpActivity extends AppCompatActivity {
             }
         });
 
-        ChekingEmailVeriicated();
+        //ChekingEmailVeriicated();
 
     }
 
@@ -114,10 +115,11 @@ public class setUpActivity extends AppCompatActivity {
         if (!isProblem){
 
             HashMap userMap = new HashMap();
-            userMap.put("user name",savingUserName);
-            userMap.put("nick name",savingNickName);
-            userMap.put("phone number",savingPhoneNumber);
+            userMap.put("userName",savingUserName);
+            userMap.put("nickName",savingNickName);
+            userMap.put("phoneNumber",savingPhoneNumber);
             userMap.put("localisation" , savingLocalisation);
+            userMap.put("password" , LoginActivity.password);
 
 
             progressDialog.setTitle("Saving Information ..");
@@ -133,7 +135,7 @@ public class setUpActivity extends AppCompatActivity {
                         Toast.makeText(setUpActivity.this, "your account is created ", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }else {
-                        Toast.makeText(setUpActivity.this, "eurro occured : "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(setUpActivity.this, "eurror occured : "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }
@@ -153,7 +155,7 @@ public class setUpActivity extends AppCompatActivity {
         super.onRestart();
 
 
-        ChekingEmailVeriicated();
+       // ChekingEmailVeriicated();
 
     }
 
@@ -165,19 +167,19 @@ public class setUpActivity extends AppCompatActivity {
 
                     shadowPage.setVisibility(View.GONE);
                     emailCard.setVisibility(View.GONE);
-                    setUpUserName.setClickable(true);
-                    setUpPhoneNumber.setClickable(true);
-                    setUpUserNickName.setClickable(true);
-                    setUpUserLocalisation.setClickable(true);
-                    registerBtn.setClickable(true);
+                    setUpUserName.setFocusable(true);
+                    setUpPhoneNumber.setFocusable(true);
+                    setUpUserNickName.setFocusable(true);
+                    setUpUserLocalisation.setFocusable(true);
+                    registerBtn.setFocusable(true);
                 } else {
                     shadowPage.setVisibility(View.VISIBLE);
                     emailCard.setVisibility(View.VISIBLE);
-                    setUpUserName.setClickable(false);
-                    setUpPhoneNumber.setClickable(false);
-                    setUpUserNickName.setClickable(false);
-                    setUpUserLocalisation.setClickable(false);
-                    registerBtn.setClickable(false);
+                    setUpUserName.setFocusable(false);
+                    setUpPhoneNumber.setFocusable(false);
+                    setUpUserNickName.setFocusable(false);
+                    setUpUserLocalisation.setFocusable(false);
+                    registerBtn.setFocusable(false);
                     Toast.makeText(setUpActivity.this, "svp , verifier votre email", Toast.LENGTH_SHORT).show();
                 }
             }
