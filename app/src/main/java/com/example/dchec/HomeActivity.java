@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -55,6 +57,9 @@ public class HomeActivity extends AppCompatActivity {
     private static FrameLayout container;
     private static FrameLayout.LayoutParams lp;
 
+    private TextView navUserName;
+
+
 
 
     @Override
@@ -67,11 +72,44 @@ public class HomeActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_view);
 
 
+
+
         addPostBtn = findViewById(R.id.add_post_btn);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.tool_bar);
         container = findViewById(R.id.container);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUserId = mAuth.getCurrentUser().getUid();
+        userRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+
+        View viewHeader = navigationView.inflateHeaderView(R.layout.navigation_header);
+        navUserName = viewHeader.findViewById(R.id.nav_user_full_name);
+
+        userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+
+                    if(snapshot.hasChild("userName")){
+                        String userName = snapshot.child("userName").getValue().toString();
+                        navUserName.setText(userName);
+                    }else {
+                        Toast.makeText(HomeActivity.this, "user name does not exist", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 
@@ -85,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        View viewHeader = navigationView.inflateHeaderView(R.layout.navigation_header);
+
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(HomeActivity.this,drawerLayout,R.string.drawer_open,R.string.drawer_close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -251,6 +289,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_messages:
+                bottomNavigationView.setSelectedItemId(R.id.bottom_nav_messages);
                 toolbar.setVisibility(View.GONE);
                 replaceFragment(new MessageFragment());
                 Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
