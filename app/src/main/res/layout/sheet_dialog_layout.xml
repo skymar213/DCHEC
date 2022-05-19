@@ -81,9 +81,11 @@
             android:layout_marginTop="13dp"
             >
 
+
+
                <TextView
                    android:id="@+id/gratuit_txt"
-                   android:layout_width="130dp"
+                   android:layout_width="120dp"
                    android:layout_height="wrap_content"
                    android:text="Gratuit"
                    android:textAlignment="center"
@@ -98,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/payant_txt"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="Payant"
                     android:textAlignment="center"
@@ -136,10 +138,26 @@
             >
 
                 <TextView
+                    android:id="@+id/categorie_all_txt"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:text="All"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:background="@drawable/category_selected"
+                    android:padding="8dp"
+
+                    >
+
+                </TextView>
+
+                <TextView
                     android:id="@+id/nourriture_txt"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="Nourriture"
+                    android:layout_marginStart="8dp"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18dp"
@@ -152,7 +170,7 @@
 
                 <TextView
                     android:id="@+id/vetement_txt"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="Vêtement"
                     android:textAlignment="center"
@@ -178,7 +196,7 @@
 
                 <TextView
                     android:id="@+id/chaussure_txt"
-                    android:layout_width="150dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:text="Chaussure"
                     android:textAlignment="center"
@@ -193,7 +211,7 @@
 
                 <TextView
                     android:id="@+id/maison_txt"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="Maison"
                     android:textAlignment="center"
@@ -208,21 +226,32 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/autre_txt"
-            android:layout_width="130dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
+            >
+
+
+        <TextView
+            android:id="@+id/autre_txt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
             android:text="Autre"
+            android:layout_marginStart="8dp"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18dp"
-            android:background="@drawable/category_selected"
+            android:background="@drawable/category_unselected"
             android:padding="8dp"
             >
 
         </TextView>
+
+
+        </LinearLayout>
 
 
         <Button

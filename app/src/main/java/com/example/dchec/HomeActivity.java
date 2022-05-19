@@ -251,6 +251,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_messages:
+                bottomNavigationView.setSelectedItemId(R.id.bottom_nav_messages);
                 toolbar.setVisibility(View.GONE);
                 replaceFragment(new MessageFragment());
                 Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();

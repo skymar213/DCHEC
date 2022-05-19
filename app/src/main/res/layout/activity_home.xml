@@ -8,46 +8,49 @@
     android:id="@+id/drawer_layout"
     tools:context=".HomeActivity">
 
-<LinearLayout
-    android:id="@+id/linear_layout"
+<RelativeLayout
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/tool_bar"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-
-    </include>
-
-    <FrameLayout
-        android:id="@+id/container"
+    <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </FrameLayout>
-
-
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
 
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </include>
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+
+    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="110dp"
+        android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/container"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints,NotSibling">
 
 
         <com.google.android.material.bottomappbar.BottomAppBar
@@ -59,7 +62,6 @@
             android:backgroundTint="@color/white"
             app:backgroundTint="@color/white"
             app:fabCradleMargin="12dp"
-
             app:fabCradleRoundedCornerRadius="30dp"
             app:fabCradleVerticalOffset="8dp"
             tools:ignore="BottomAppBar,MissingConstraints">
@@ -84,9 +86,10 @@
         </com.google.android.material.bottomappbar.BottomAppBar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
             android:id="@+id/add_post_btn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:backgroundTint="@color/main_color"
             android:elevation="5dp"
             android:src="@drawable/ic_add"
@@ -95,9 +98,12 @@
 
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
+
+</RelativeLayout>
 
 
 
