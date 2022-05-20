@@ -42,18 +42,17 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageView
-
+            <ImageButton
                 android:id="@+id/add_post_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="130dp"
+                android:layout_height="115dp"
                 android:layout_gravity="center_vertical"
+                android:scaleType="centerInside"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/ic_add_photo_background"
-                android:padding="25dp"
                 android:src="@drawable/ic_add_photo_icon">
 
-            </ImageView>
+            </ImageButton>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -171,7 +170,21 @@
                 </RadioButton>
 
 
+
+
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/add_post_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="prix ..."
+                android:visibility="gone"
+                android:layout_marginHorizontal="20dp"
+                >
+
+            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"

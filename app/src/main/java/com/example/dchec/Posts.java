@@ -1,7 +1,15 @@
 package com.example.dchec;
 
 public class Posts {
-    public String userName , uid , title , postImage , description ;
+    public String userName , uid , title , postImage , description , price ;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public Posts(){
 

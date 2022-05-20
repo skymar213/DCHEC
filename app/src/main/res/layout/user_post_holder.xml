@@ -32,18 +32,37 @@
         </androidx.cardview.widget.CardView>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
         <TextView
             android:id="@+id/user_post_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:text="Title"
             android:textColor="@color/nav_black"
             android:textSize="18sp"
             android:textStyle="bold">
 
         </TextView>
+
+            <TextView
+            android:id="@+id/user_post_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:textColor="@color/account_green"
+            android:textSize="16dp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/user_post_user_name"

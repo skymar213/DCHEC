@@ -77,6 +77,8 @@ public class UserFragment extends Fragment {
                 holder.setUser_Name(model.getUserName());
                 holder.setPost_Image(model.getPostImage());
                 holder.setTitle(model.getTitle());
+                holder.setPrice(model.getPrice());
+
 
 
             }
@@ -112,6 +114,12 @@ public class UserFragment extends Fragment {
         public void setTitle(String title){
             TextView userName = mView.findViewById(R.id.user_post_title);
             userName.setText(title);
+        }
+
+        public void setPrice(String price){
+            TextView userPrice = mView.findViewById(R.id.user_post_price);
+                userPrice.setText(price);
+
         }
 
         public void setPost_Image( String post_Image){

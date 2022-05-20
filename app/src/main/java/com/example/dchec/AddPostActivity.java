@@ -35,7 +35,7 @@ public class AddPostActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ImageView selectImage;
-    private EditText titleTxt , descriptionTxt;
+    private EditText titleTxt , descriptionTxt , priceTxt;
     private RadioButton gratuitBtn , payantBtn , nourritureBtn , vetementBtn , chaussureBtn ,maisonBtn , autreBtn ;
     private static final int Gallery_Pick =1;
     private Uri ImageUri;
@@ -44,7 +44,7 @@ public class AddPostActivity extends AppCompatActivity {
             , payantNourritureRef , payantVetementRef , payantChaussureRef , payantMaisonRef ,payantAutreRef , chosenOneRef;
     private FirebaseAuth mAuth;
     private Button updatePost;
-    private String description , title , downloadUrl , current_user_id;
+    private String description , title , downloadUrl , current_user_id , price;
     private ProgressDialog progressDialog;
     private boolean isFree = true;
 
@@ -85,6 +85,7 @@ public class AddPostActivity extends AppCompatActivity {
         selectImage = findViewById(R.id.add_post_img);
         titleTxt = findViewById(R.id.add_post_title);
         descriptionTxt = findViewById(R.id.add_post_description);
+        priceTxt = findViewById(R.id.add_post_price);
         updatePost = findViewById(R.id.update_post);
 
         gratuitBtn = findViewById(R.id.gratuit_radio_btn);
@@ -98,6 +99,7 @@ public class AddPostActivity extends AppCompatActivity {
         gratuitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                priceTxt.setVisibility(View.GONE);
                 gratuitBtn.setChecked(true);
                 payantBtn.setChecked(false);
             }
@@ -106,6 +108,7 @@ public class AddPostActivity extends AppCompatActivity {
         payantBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                priceTxt.setVisibility(View.VISIBLE);
                 gratuitBtn.setChecked(false);
                 payantBtn.setChecked(true);
             }
@@ -244,6 +247,7 @@ public class AddPostActivity extends AppCompatActivity {
     private void ValidatePostInfo() {
         description = descriptionTxt.getText().toString();
         title = titleTxt.getText().toString();
+        price = priceTxt.getText().toString();
         if (selectImage == null){
             Toast.makeText(AddPostActivity.this, "Please select your image", Toast.LENGTH_SHORT).show();
         }
@@ -306,6 +310,7 @@ public class AddPostActivity extends AppCompatActivity {
                     postMap.put("description" , description);
                     postMap.put("title" , title);
                     postMap.put("postImage" , downloadUrl);
+                    postMap.put("price" , price);
 
                     postRef.child(current_user_id + " " + title ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
