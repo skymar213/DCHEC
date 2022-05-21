@@ -38,7 +38,7 @@ import com.squareup.picasso.Picasso;
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth ;
-    private DatabaseReference userRef;
+    private DatabaseReference userRef , associationRef;
     private String currentUserId;
     private FloatingActionButton addPostBtn ;
 
@@ -83,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
+        associationRef = FirebaseDatabase.getInstance().getReference().child("association");
 
 
         View viewHeader = navigationView.inflateHeaderView(R.layout.navigation_header);
@@ -218,20 +219,39 @@ public class HomeActivity extends AppCompatActivity {
 
         final String current_user_id = mAuth.getCurrentUser().getUid();
 
+        if (MainActivity.isSimpleUser){
 
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!(snapshot.hasChild(current_user_id))){
-                    sendUserToSetUpActivity();
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!(snapshot.hasChild(current_user_id))){
+                        sendUserToSetUpActivity();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        } else {
+
+            associationRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (!(snapshot.hasChild(current_user_id))){
+                        sendUserToSetUpActivity();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+
 
     }
 

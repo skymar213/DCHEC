@@ -36,7 +36,6 @@ public class PostsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.posts_fragment , container , false);
 
-        replaceFragment(new UserFragment());
 
 
         postRef = FirebaseDatabase.getInstance().getReference().child("posts");
@@ -64,6 +63,18 @@ public class PostsFragment extends Fragment {
         associationTxt = view.findViewById(R.id.association_post_txt);
         categoryBtn = view.findViewById(R.id.category_icon);
 
+        if(MainActivity.isSimpleUser){
+            replaceFragment(new UserFragment());
+            utilisateurTxt.setTextColor(getResources().getColor(R.color.main_color));
+            associationTxt.setTextColor(getResources().getColor(R.color.hint_grey));
+            categoryBtn.setVisibility(View.VISIBLE);
+        }else {
+            replaceFragment(new AssociationFragment());
+            utilisateurTxt.setTextColor(getResources().getColor(R.color.hint_grey));
+            associationTxt.setTextColor(getResources().getColor(R.color.main_color));
+            categoryBtn.setVisibility(View.GONE);
+        }
+
         utilisateurTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +85,9 @@ public class PostsFragment extends Fragment {
                 associationTxt.setTextColor(getResources().getColor(R.color.hint_grey));
                 associationTxt.animate().scaleX(1f);
                 associationTxt.animate().scaleY(1f);
+
+                categoryBtn.setVisibility(View.VISIBLE);
+
 
                 replaceFragment(new UserFragment());
             }
@@ -89,6 +103,8 @@ public class PostsFragment extends Fragment {
                 associationTxt.setTextColor(getResources().getColor(R.color.main_color));
                 associationTxt.animate().scaleX(1.1f);
                 associationTxt.animate().scaleY(1.1f);
+
+                categoryBtn.setVisibility(View.GONE);
 
                 replaceFragment(new AssociationFragment());
             }
@@ -127,6 +143,7 @@ public class PostsFragment extends Fragment {
         TextView maisaon = dialog.findViewById(R.id.maison_txt);
         TextView autre = dialog.findViewById(R.id.autre_txt);
         Button chercher = dialog.findViewById(R.id.btn_chercher);
+
 
 
 

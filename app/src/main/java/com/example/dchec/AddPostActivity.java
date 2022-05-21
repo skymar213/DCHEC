@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,16 +38,18 @@ public class AddPostActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView selectImage;
     private EditText titleTxt , descriptionTxt , priceTxt;
+    private TextView natureTxt , categorieTxt ;
     private RadioButton gratuitBtn , payantBtn , nourritureBtn , vetementBtn , chaussureBtn ,maisonBtn , autreBtn ;
     private static final int Gallery_Pick =1;
     private Uri ImageUri;
     private StorageReference postImageReference;
-    private DatabaseReference userRef , postRef , natureRef , categoryRef , gratuitRef , payantRef , gratuitNourritureRef , gratuitVetementRef , gratuitChaussureRef , gratuitMaisonRef , gratuitAutreRef
+    private DatabaseReference userRef , associationRef, userPostRef, associationPostRef ,  natureRef , categoryRef , gratuitRef , payantRef , gratuitNourritureRef , gratuitVetementRef , gratuitChaussureRef , gratuitMaisonRef , gratuitAutreRef
             , payantNourritureRef , payantVetementRef , payantChaussureRef , payantMaisonRef ,payantAutreRef , chosenOneRef;
     private FirebaseAuth mAuth;
     private Button updatePost;
     private String description , title , downloadUrl , current_user_id , price;
     private ProgressDialog progressDialog;
+    private CardView addPostCardView ;
     private boolean isFree = true;
 
 
@@ -58,9 +62,13 @@ public class AddPostActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         current_user_id = mAuth.getCurrentUser().getUid();
 
+        addPostCardView = findViewById(R.id.cardView);
+
         postImageReference = FirebaseStorage.getInstance().getReference().child("Post_Image");
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
-        postRef = FirebaseDatabase.getInstance().getReference().child("posts");
+        associationRef = FirebaseDatabase.getInstance().getReference().child("association");
+        userPostRef = FirebaseDatabase.getInstance().getReference().child("posts");
+        associationPostRef = FirebaseDatabase.getInstance().getReference().child("associationPosts");
 
         natureRef = FirebaseDatabase.getInstance().getReference().child("nature");
         categoryRef = FirebaseDatabase.getInstance().getReference().child("categorie");
@@ -87,6 +95,8 @@ public class AddPostActivity extends AppCompatActivity {
         descriptionTxt = findViewById(R.id.add_post_description);
         priceTxt = findViewById(R.id.add_post_price);
         updatePost = findViewById(R.id.update_post);
+        natureTxt = findViewById(R.id.nature_txt);
+        categorieTxt = findViewById(R.id.categorie_txt);
 
         gratuitBtn = findViewById(R.id.gratuit_radio_btn);
         payantBtn = findViewById(R.id.payant_radio_btn);
@@ -95,6 +105,37 @@ public class AddPostActivity extends AppCompatActivity {
         chaussureBtn = findViewById(R.id.chaussure_radio_btn);
         maisonBtn = findViewById(R.id.maison_radio_btn);
         autreBtn = findViewById(R.id.autre_radio_btn);
+
+
+        if (MainActivity.isSimpleUser){
+
+            addPostCardView.setVisibility(View.VISIBLE);
+
+            natureTxt.setVisibility(View.VISIBLE);
+            categorieTxt.setVisibility(View.VISIBLE);
+
+            gratuitBtn.setVisibility(View.VISIBLE);
+            payantBtn.setVisibility(View.VISIBLE);
+            nourritureBtn.setVisibility(View.VISIBLE);
+            vetementBtn.setVisibility(View.VISIBLE);
+            chaussureBtn.setVisibility(View.VISIBLE);
+            maisonBtn.setVisibility(View.VISIBLE);
+            autreBtn.setVisibility(View.VISIBLE);
+        } else {
+            addPostCardView.setVisibility(View.GONE);
+
+            natureTxt.setVisibility(View.GONE);
+            categorieTxt.setVisibility(View.GONE);
+            priceTxt.setVisibility(View.GONE);
+
+            gratuitBtn.setVisibility(View.GONE);
+            payantBtn.setVisibility(View.GONE);
+            nourritureBtn.setVisibility(View.GONE);
+            vetementBtn.setVisibility(View.GONE);
+            chaussureBtn.setVisibility(View.GONE);
+            maisonBtn.setVisibility(View.GONE);
+            autreBtn.setVisibility(View.GONE);
+        }
 
         gratuitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,7 +299,12 @@ public class AddPostActivity extends AppCompatActivity {
             progressDialog.setMessage("Updating the Post is on progress ...");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
-            StoringImageToFireBaseStorage();
+
+            if (MainActivity.isSimpleUser){
+                StoringImageToFireBaseStorage();
+            }else {
+                SavingPostInformationToDataBase();
+            }
         }
     }
 
@@ -298,113 +344,160 @@ public class AddPostActivity extends AppCompatActivity {
     }
 
     private void SavingPostInformationToDataBase() {
-        userRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    String userFullName = snapshot.child("userName").getValue().toString();
 
-                    HashMap postMap = new HashMap();
-                    postMap.put("uid" , current_user_id);
-                    postMap.put("userName" , userFullName);
-                    postMap.put("description" , description);
-                    postMap.put("title" , title);
-                    postMap.put("postImage" , downloadUrl);
-                    postMap.put("price" , price);
+        if (MainActivity.isSimpleUser){
 
-                    postRef.child(current_user_id + " " + title ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-                            if (task.isSuccessful()){
+            userRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+                        String userFullName = snapshot.child("userName").getValue().toString();
 
+                        HashMap postMap = new HashMap();
+                        postMap.put("uid" , current_user_id);
+                        postMap.put("userName" , userFullName);
+                        postMap.put("description" , description);
+                        postMap.put("title" , title);
+                        postMap.put("postImage" , downloadUrl);
+                        postMap.put("price" , price);
+
+                        userPostRef.child(current_user_id + " " + title ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                if (task.isSuccessful()){
+
+                                    progressDialog.dismiss();
+                                    Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                }
                                 progressDialog.dismiss();
-                                Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
                             }
-                            progressDialog.dismiss();
+                        });
+
+                        if (isFree){
+
+                            gratuitRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful()){
+
+                                        progressDialog.dismiss();
+                                        Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
+                                        sendUserToHomeActivity();
+
+                                    }else{
+                                        Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+
+                            chosenOneRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful()){
+
+                                        progressDialog.dismiss();
+                                        Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
+                                        sendUserToHomeActivity();
+
+                                    }else{
+                                        Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+
+                        }else{
+
+                            payantRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful()){
+
+                                        progressDialog.dismiss();
+                                        Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
+                                        sendUserToHomeActivity();
+
+                                    }else{
+                                        Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+
+                            chosenOneRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful()){
+
+                                        progressDialog.dismiss();
+                                        Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
+                                        sendUserToHomeActivity();
+
+                                    }else{
+                                        Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+
                         }
-                    });
 
-                    if (isFree){
 
-                        gratuitRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } else {
+            associationRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if ( snapshot.exists()){
+
+                        String associationName = snapshot.child("userName").getValue().toString();
+
+                        HashMap postMap = new HashMap();
+                        postMap.put("uid" , current_user_id);
+                        postMap.put("userName" , associationName);
+                        postMap.put("description" , description);
+                        postMap.put("title" , title);
+
+
+
+                        associationPostRef.child(current_user_id +" " + title).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task task) {
+                            public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
-
+                                    sendUserToHomeActivity();
                                     progressDialog.dismiss();
                                     Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
-                                    sendUserToHomeActivity();
-
                                 }else{
                                     Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
                                 }
                                 progressDialog.dismiss();
                             }
+
                         });
 
-                        chosenOneRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-                                if (task.isSuccessful()){
-
-                                    progressDialog.dismiss();
-                                    Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
-                                    sendUserToHomeActivity();
-
-                                }else{
-                                    Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
-                                }
-                                progressDialog.dismiss();
-                            }
-                        });
-
-                    }else{
-
-                        payantRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-                                if (task.isSuccessful()){
-
-                                    progressDialog.dismiss();
-                                    Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
-                                    sendUserToHomeActivity();
-
-                                }else{
-                                    Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
-                                }
-                                progressDialog.dismiss();
-                            }
-                        });
-
-                        chosenOneRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-                                if (task.isSuccessful()){
-
-                                    progressDialog.dismiss();
-                                    Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
-                                    sendUserToHomeActivity();
-
-                                }else{
-                                    Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
-                                }
-                                progressDialog.dismiss();
-                            }
-                        });
 
                     }
 
 
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
 
     }
 

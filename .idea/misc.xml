@@ -19,7 +19,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/drawable/transparent_background.xml" value="1.0107142857142857" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/drawable/user_posts_shape.xml" value="0.161" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/account_fragment.xml" value="0.1641025641025641" />
-        <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_account.xml" value="0.12" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_account.xml" value="0.16" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_add_post.xml" value="0.18" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_forget_password.xml" value="0.18" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_home.xml" value="0.2" />
@@ -27,6 +27,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_set_up.xml" value="0.2" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/add_post_tool_bar.xml" value="0.16324786324786325" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/association_fragment.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/association_fragmetn.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/association_post_holder.xml" value="0.18" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/info_fragment.xml" value="0.1641025641025641" />

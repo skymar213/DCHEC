@@ -1,6 +1,5 @@
 package com.example.dchec;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -9,10 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView utilisateurTxt , associationTxt;
 
     private FirebaseAuth firebaseAuth;
+    public static boolean isSimpleUser;
 
 
 
@@ -52,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         utilisateurCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                isSimpleUser = true;
+
                 utilisateurCard.setCardBackgroundColor(getResources().getColor(R.color.main_color));
                 utilisateurTxt.setTextColor(getResources().getColor(R.color.white));
                 utilisateurCard.setCardElevation(10);
@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         associationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                isSimpleUser = false;
+
                 utilisateurCard.setCardBackgroundColor(getResources().getColor(R.color.white));
                 utilisateurTxt.setTextColor(getResources().getColor(R.color.main_color));
                 utilisateurCard.setCardElevation(0);
@@ -96,12 +99,20 @@ public class MainActivity extends AppCompatActivity {
                 associationCard.setElevation(10);
                 associationCard.animate().scaleX(1f);
                 associationCard.animate().scaleY(1f);
+
+                Timer myTimer = new Timer();
+                myTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        sendUserToLogInActivity();
+                    }
+                },200);
             }
         });
 
 
 
-        CheckingEmailVerificated();
+        CheckingUserExistance();
 
 
 
@@ -109,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void CheckingEmailVerificated() {
+    private void CheckingUserExistance() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
                 sendUserToHomeActivity();

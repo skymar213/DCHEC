@@ -126,6 +126,7 @@
 
 
             <TextView
+                android:id="@+id/nature_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -187,6 +188,7 @@
             </EditText>
 
             <TextView
+                android:id="@+id/categorie_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"

@@ -184,8 +184,32 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/set_up_user_phone_number"
+                android:id="@+id/set_up_association_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="3dp"
+                app:layout_constraintTop_toBottomOf="@+id/title_text"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="34dp">
 
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/association_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Id"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint_grey">
+
+                </com.google.android.material.textfield.TextInputEditText>
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/set_up_user_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"

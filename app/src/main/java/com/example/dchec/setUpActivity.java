@@ -8,7 +8,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,12 +28,12 @@ public class setUpActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth ;
     private CardView emailCard;
     private ImageView shadowPage;
-    private EditText userName , userNickName , userPhoneNumber , userLocalisation ;
+    private EditText userName , userNickName , userPhoneNumber , userLocalisation , associationId;
     private Button registerBtn;
-    private TextInputLayout setUpUserName ,setUpUserNickName , setUpPhoneNumber , setUpUserLocalisation;
+    private TextInputLayout setUpUserName ,setUpUserNickName , setUpPhoneNumber , setUpUserLocalisation , setUpAssociationId;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference userRef ;
+    private DatabaseReference userRef , associationRef;
     private String currentUserId;
     private ProgressDialog progressDialog;
     private Boolean isProblem = false;
@@ -56,11 +55,21 @@ public class setUpActivity extends AppCompatActivity {
         userNickName = findViewById(R.id.user_nickname);
         userPhoneNumber = findViewById(R.id.user_phone_number);
         userLocalisation = findViewById(R.id.user_localisation);
+        associationId = findViewById(R.id.association_id);
 
         setUpUserName = findViewById(R.id.set_up_user_name);
         setUpUserNickName = findViewById(R.id.set_up_user__nick_name);
         setUpUserLocalisation = findViewById(R.id.set_up_user_localisation);
         setUpPhoneNumber = findViewById(R.id.set_up_user_phone_number);
+        setUpAssociationId = findViewById(R.id.set_up_association_id);
+
+        if (MainActivity.isSimpleUser){
+            setUpUserNickName.setVisibility(View.VISIBLE);
+            setUpAssociationId.setVisibility(View.GONE);
+        }else{
+            setUpAssociationId.setVisibility(View.VISIBLE);
+            setUpUserNickName.setVisibility(View.GONE);
+        }
 
 
         registerBtn = findViewById(R.id.setp_button);
@@ -68,6 +77,7 @@ public class setUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = firebaseAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
+        associationRef = FirebaseDatabase.getInstance().getReference().child("association").child(currentUserId);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,15 +96,23 @@ public class setUpActivity extends AppCompatActivity {
         String savingNickName = userNickName.getText().toString();
         String savingPhoneNumber = userPhoneNumber.getText().toString();
         String savingLocalisation = userLocalisation.getText().toString();
+        String savingAssociationId = associationId.getText().toString();
 
 
         if (TextUtils.isEmpty(savingUserName)) {
             userName.setError("obligatoire");
         }
 
-        if (TextUtils.isEmpty(savingNickName)) {
-            userNickName.setError("obligatoire");
+        if( MainActivity.isSimpleUser){
+            if (TextUtils.isEmpty(savingNickName)) {
+                userNickName.setError("obligatoire");
+            }
+        }else {
+            if (TextUtils.isEmpty(savingAssociationId)){
+                associationId.setError("obligatoire");
+            }
         }
+
 
         if (TextUtils.isEmpty(savingPhoneNumber)) {
             userPhoneNumber.setError("obligatoire");
@@ -105,10 +123,19 @@ public class setUpActivity extends AppCompatActivity {
         }
 
 
-        if (TextUtils.isEmpty(savingNickName) || TextUtils.isEmpty(savingUserName) || TextUtils.isEmpty(savingPhoneNumber) ){
-            isProblem = true ;
-        }else{
-            isProblem = false;
+        if (MainActivity.isSimpleUser){
+
+            if (TextUtils.isEmpty(savingNickName) || TextUtils.isEmpty(savingUserName) || TextUtils.isEmpty(savingPhoneNumber) ){
+                isProblem = true ;
+            }else{
+                isProblem = false;
+            }
+        } else {
+            if (TextUtils.isEmpty(savingAssociationId) || TextUtils.isEmpty(savingUserName) || TextUtils.isEmpty(savingPhoneNumber) ){
+                isProblem = true ;
+            }else{
+                isProblem = false;
+            }
         }
 
 
@@ -116,10 +143,10 @@ public class setUpActivity extends AppCompatActivity {
 
             HashMap userMap = new HashMap();
             userMap.put("userName",savingUserName);
-            userMap.put("nickName",savingNickName);
             userMap.put("phoneNumber",savingPhoneNumber);
             userMap.put("localisation" , savingLocalisation);
             userMap.put("password" , LoginActivity.password);
+
 
 
             progressDialog.setTitle("Saving Information ..");
@@ -127,19 +154,39 @@ public class setUpActivity extends AppCompatActivity {
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
 
-            userRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful()) {
-                        sendUserToHomeActivity();
-                        Toast.makeText(setUpActivity.this, "your account is created ", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }else {
-                        Toast.makeText(setUpActivity.this, "eurror occured : "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+            if (MainActivity.isSimpleUser){
+
+                userMap.put("nickName",savingNickName);
+                userRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            sendUserToHomeActivity();
+                            Toast.makeText(setUpActivity.this, "your account is created ", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }else {
+                            Toast.makeText(setUpActivity.this, "eurror occured : "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                userMap.put("id",savingAssociationId);
+                associationRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            sendUserToHomeActivity();
+                            Toast.makeText(setUpActivity.this, "your account is created ", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }else {
+                            Toast.makeText(setUpActivity.this, "eurror occured : "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+            }
+
 
         }
     }
