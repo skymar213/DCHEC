@@ -25,6 +25,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_main.xml" value="0.18" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_message.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/activity_set_up.xml" value="0.2" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/add_post_tool_bar.xml" value="0.16324786324786325" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/association_fragment.xml" value="0.1641025641025641" />
@@ -45,14 +46,6 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/layout/user_post_holder.xml" value="0.16" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/menu/bottom_menu.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Dchec/app/src/main/res/menu/navigation_menu.xml" value="0.15" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/drawable/contacter_back.xml" value="0.145" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/drawable/search_back.xml" value="0.145" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/drawable/selected_cat.xml" value="0.145" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/layout/message_fragment.xml" value="0.16354166666666667" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/layout/profile_fragment.xml" value="0.22" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/layout/search_fragment.xml" value="0.45185185185185184" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/layout/user_holder.xml" value="0.4466666666666667" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/Dchecx/app/src/main/res/layout/user_search_holder.xml" value="0.16354166666666667" />
       </map>
     </option>
   </component>
