@@ -3,12 +3,13 @@ package com.example.dchec;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,12 +24,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MessageFragment extends Fragment {
     private RecyclerView recycler;
     private ArrayList<User> users;
     private ProgressBar progressBar;
     private usersAdapter usersAdapter;
+    private Button btnBack;
     usersAdapter.onUserClickListener onUserClickListener;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String myImageUrl;
@@ -42,6 +45,12 @@ public class MessageFragment extends Fragment {
         progressBar =(ProgressBar) view.findViewById(R.id.progressBar);
         users = new ArrayList<>();
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        btnBack = view.findViewById(R.id.btnBack);
+
+
+
+
+
         swipeRefreshLayout = view.findViewById(R.id.swipeLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -54,14 +63,17 @@ public class MessageFragment extends Fragment {
     onUserClickListener = new usersAdapter.onUserClickListener() {
         @Override
         public void onUserClicked(int position) {
-            startActivity(new Intent(getActivity(),MessageFragment.class)
-                    .putExtra("nom_of_roommate", users.get(position).getNom())
-                    .putExtra("prenom_of_roommate", users.get(position).getPrenom())
+            Intent i = new Intent(getActivity(), MessageActivity.class)
+
+                    .putExtra("nom_of_roommate", users.get(position).getUserName())
+                    .putExtra("prenom_of_roommate", users.get(position).getNickName())
                     .putExtra("email_of_roommate",users.get(position).getEmail())
                     .putExtra("image_of_roommate",users.get(position).getProfilePicture())
                     .putExtra("my_image",myImageUrl)
+            ;
+            startActivity(i);
 
-            );
+
 
         }
     };
@@ -70,24 +82,22 @@ public class MessageFragment extends Fragment {
 }
     private void getUsers(){
         users.clear();
-        FirebaseDatabase.getInstance().getReference("User").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    users.add(dataSnapshot.getValue(User.class));
+                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        users.add(dataSnapshot.getValue(User.class));
+                    }
                 }
+
                 usersAdapter = new usersAdapter(users,getContext(),onUserClickListener);
                 recycler.setLayoutManager(new LinearLayoutManager(getContext()));
                 recycler.setAdapter(usersAdapter);
                 progressBar.setVisibility(View.GONE);
                 recycler.setVisibility(View.VISIBLE);
 
-                for(User user:users){
-                    if(user.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
-                        myImageUrl = user.getProfilePicture();
-                        return;
-                    }
-                }
+
 
             }
 

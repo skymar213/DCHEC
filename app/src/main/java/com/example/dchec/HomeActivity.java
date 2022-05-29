@@ -23,7 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth ;
     private DatabaseReference userRef , associationRef;
     private String currentUserId;
-    private FloatingActionButton addPostBtn ;
+    private Button logoutBtn;
 
     private GoogleSignInOptions gso;
     private GoogleSignInClient mGoogleSignInClient;
@@ -74,7 +73,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-        addPostBtn = findViewById(R.id.add_post_btn);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.tool_bar);
@@ -131,14 +129,6 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_icon_menu);
 
-        addPostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendUserToAddPostActivity();
-
-            }
-        });
-
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -192,10 +182,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private void sendUserToAddPostActivity() {
-        Intent intent = new Intent(HomeActivity.this , AddPostActivity.class);
-        startActivity(intent);
-    }
 
 
     private void LogOutMethod() {
@@ -304,12 +290,11 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.nav_account:
-                sendUserToAccountActivity();
+                toolbar.setVisibility(View.GONE);
                 Toast.makeText(this, "compte", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_messages:
-                bottomNavigationView.setSelectedItemId(R.id.bottom_nav_messages);
                 toolbar.setVisibility(View.GONE);
                 replaceFragment(new MessageFragment());
                 Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
@@ -342,11 +327,6 @@ public class HomeActivity extends AppCompatActivity {
 
         drawerLayout.closeDrawer(GravityCompat.START);
 
-    }
-
-    private void sendUserToAccountActivity() {
-        Intent intent = new Intent(HomeActivity.this, AccountActivity.class);
-        startActivity(intent);
     }
 
     private void bottomUserSelected(MenuItem item) {
