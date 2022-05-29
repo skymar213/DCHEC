@@ -42,7 +42,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
 
         recyclerPost = view.findViewById(R.id.recyclerPosts);
-        recyclerPost.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerPost.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
         DisplayAllUserPosts();
         txtPhoneNum = view.findViewById(R.id.txtPhoneNum);
         txtUsername = view.findViewById(R.id.txtUsername);
