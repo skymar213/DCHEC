@@ -42,6 +42,8 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser" , true);
+
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         accountUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);

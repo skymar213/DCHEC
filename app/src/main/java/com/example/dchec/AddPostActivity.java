@@ -43,7 +43,7 @@ public class AddPostActivity extends AppCompatActivity {
     private static final int Gallery_Pick =1;
     private Uri ImageUri;
     private StorageReference postImageReference;
-    private DatabaseReference userRef , associationRef, userPostRef, associationPostRef ,  natureRef , categoryRef , gratuitRef , payantRef , gratuitNourritureRef , gratuitVetementRef , gratuitChaussureRef , gratuitMaisonRef , gratuitAutreRef
+    private DatabaseReference userRef ,userProfilePostRef, associationRef, userPostRef, associationPostRef ,  natureRef , categoryRef , gratuitRef , payantRef , gratuitNourritureRef , gratuitVetementRef , gratuitChaussureRef , gratuitMaisonRef , gratuitAutreRef
             , payantNourritureRef , payantVetementRef , payantChaussureRef , payantMaisonRef ,payantAutreRef , chosenOneRef;
     private FirebaseAuth mAuth;
     private Button updatePost;
@@ -58,6 +58,8 @@ public class AddPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser" , true);
+
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         current_user_id = mAuth.getCurrentUser().getUid();
@@ -68,6 +70,7 @@ public class AddPostActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
         associationRef = FirebaseDatabase.getInstance().getReference().child("association");
         userPostRef = FirebaseDatabase.getInstance().getReference().child("posts");
+        userProfilePostRef = FirebaseDatabase.getInstance().getReference().child("profilePosts").child(current_user_id);
         associationPostRef = FirebaseDatabase.getInstance().getReference().child("associationPosts");
 
         natureRef = FirebaseDatabase.getInstance().getReference().child("nature");
@@ -368,6 +371,17 @@ public class AddPostActivity extends AppCompatActivity {
 
                                     progressDialog.dismiss();
                                     Toast.makeText(AddPostActivity.this, "post updated", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                        userProfilePostRef.child(current_user_id + " " + title + " profile").updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                if (task.isSuccessful()){
                                 }else{
                                     Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
                                 }

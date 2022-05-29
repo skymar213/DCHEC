@@ -43,6 +43,7 @@ public class setUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
 
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser" , true);
 
         emailCard = findViewById(R.id.email_card);
         shadowPage = findViewById(R.id.shadow_page_setUp);

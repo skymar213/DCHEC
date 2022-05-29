@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView utilisateurTxt , associationTxt;
 
     private FirebaseAuth firebaseAuth;
+    static SharedPreferences sharedPreferences;
     public static boolean isSimpleUser;
 
 
@@ -45,12 +48,17 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        isSimpleUser = sharedPreferences.getBoolean("Notification",true);
+
 
         utilisateurCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                isSimpleUser = true;
+
+                sharedPreferences.edit().putBoolean("isSimpleUser" , true).apply();
 
                 utilisateurCard.setCardBackgroundColor(getResources().getColor(R.color.main_color));
                 utilisateurTxt.setTextColor(getResources().getColor(R.color.white));
@@ -83,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                isSimpleUser = false;
+
+                sharedPreferences.edit().putBoolean("isSimpleUser" , false).apply();
 
                 utilisateurCard.setCardBackgroundColor(getResources().getColor(R.color.white));
                 utilisateurTxt.setTextColor(getResources().getColor(R.color.main_color));

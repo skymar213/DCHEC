@@ -67,9 +67,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser",true);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         navigationView = findViewById(R.id.navigation_view);
+
+
 
 
 
@@ -89,28 +92,54 @@ public class HomeActivity extends AppCompatActivity {
         View viewHeader = navigationView.inflateHeaderView(R.layout.navigation_header);
         navUserName = viewHeader.findViewById(R.id.nav_user_full_name);
 
-        userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+        if(MainActivity.isSimpleUser){
 
-                    if(snapshot.hasChild("userName")){
-                        String userName = snapshot.child("userName").getValue().toString();
-                        navUserName.setText(userName);
-                    }else {
-                        Toast.makeText(HomeActivity.this, "user name does not exist", Toast.LENGTH_SHORT).show();
+            userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+
+                        if(snapshot.hasChild("userName")){
+                            String userName = snapshot.child("userName").getValue().toString();
+                            navUserName.setText(userName);
+                        }else {
+                            Toast.makeText(HomeActivity.this, "user name does not exist", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
+
 
                 }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
+                }
+            });
+        }else {
+            associationRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                        if(snapshot.hasChild("userName")){
+                            String userName = snapshot.child("userName").getValue().toString();
+                            navUserName.setText(userName);
+                        }else {
+                            Toast.makeText(HomeActivity.this, "user name does not exist", Toast.LENGTH_SHORT).show();
+                        }
 
-            }
-        });
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
 
 
@@ -241,6 +270,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (!(snapshot.hasChild(current_user_id))){
                         sendUserToSetUpActivity();
+                        Toast.makeText(HomeActivity.this, "check the user existence", Toast.LENGTH_SHORT).show();
                     }
                 }
 

@@ -37,6 +37,7 @@ public class PostsFragment extends Fragment {
         View view = inflater.inflate(R.layout.posts_fragment , container , false);
 
 
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser" , true);
 
         postRef = FirebaseDatabase.getInstance().getReference().child("posts");
 
