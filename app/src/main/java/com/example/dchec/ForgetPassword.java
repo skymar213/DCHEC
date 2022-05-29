@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +26,7 @@ public class ForgetPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
 
-        arrowBack = findViewById(R.id.arrow_back);
+        arrowBack = findViewById(R.id.btnBack);
         userEmail = findViewById(R.id.user_email_forget_password);
         btnPassword = findViewById(R.id.forget_password_btn);
         firebaseAuth = FirebaseAuth.getInstance();

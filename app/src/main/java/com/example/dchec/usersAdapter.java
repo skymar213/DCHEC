@@ -18,6 +18,12 @@ public class usersAdapter extends RecyclerView.Adapter<usersAdapter.usersHolder>
     private  Context context;
     private onUserClickListener onUserClickListener;
 
+    public usersAdapter(ArrayList<User> users, Context context) {
+        this.users = users;
+        this.context = context;
+
+    }
+
     public usersAdapter(ArrayList<User> users, Context context, usersAdapter.onUserClickListener onUserClickListener) {
         this.users = users;
         this.context = context;
@@ -39,7 +45,7 @@ public class usersAdapter extends RecyclerView.Adapter<usersAdapter.usersHolder>
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull usersHolder holder, int position) {
-        holder.txtUsername.setText(users.get(position).getNom()+""+users.get(position).getPrenom());
+        holder.txtUsername.setText(users.get(position).getUserName());
     }
 
     @Override

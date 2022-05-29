@@ -1,17 +1,17 @@
 package com.example.dchec;
 
 public class User {
-    String nom;
-    String prenom;
+    String userName;
+    String nickName;
     String email;
     String profilePicture;
 
     public User() {
     }
 
-    public User(String nom,String prenom ,String email , String profilePicture) {
-        this.nom = nom;
-        this.prenom = prenom;
+    public User(String userName, String nickName, String email , String profilePicture) {
+        this.userName = userName;
+        this.nickName = nickName;
         this.email = email;
         this.profilePicture = profilePicture;
     }
@@ -32,18 +32,18 @@ public class User {
         this.email = email;
     }
 
-    public String getNom() {
-        return nom;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getPrenom(){return prenom;}
+    public String getNickName(){return nickName;}
 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }
 

@@ -14,6 +14,12 @@ public class Posts {
     public Posts(){
 
     }
+    public Posts(String userName,String title,String postImage){
+        this.userName = userName;
+        this.title = title;
+        this.postImage = postImage;
+
+    }
 
     public Posts(String userName, String uid, String title, String postImage, String description) {
         this.userName = userName;

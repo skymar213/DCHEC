@@ -194,7 +194,9 @@ public class setUpActivity extends AppCompatActivity {
 
     private void sendUserToHomeActivity() {
         Intent mainActivity = new Intent(setUpActivity.this,HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        mainActivity.putExtra("userName", String.valueOf(userName));
         startActivity(mainActivity);
+
         finish();
     }
 

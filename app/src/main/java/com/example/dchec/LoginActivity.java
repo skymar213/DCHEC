@@ -365,7 +365,7 @@ public class LoginActivity extends AppCompatActivity {
                         });
 
                     } else {
-                        Toast.makeText(LoginActivity.this, "eurror : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }
