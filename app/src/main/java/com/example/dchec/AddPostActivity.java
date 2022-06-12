@@ -43,7 +43,7 @@ public class AddPostActivity extends AppCompatActivity {
     private static final int Gallery_Pick =1;
     private Uri ImageUri;
     private StorageReference postImageReference;
-    private DatabaseReference userRef ,userProfilePostRef, associationRef, userPostRef, associationPostRef ,  natureRef , categoryRef , gratuitRef , payantRef , gratuitNourritureRef , gratuitVetementRef , gratuitChaussureRef , gratuitMaisonRef , gratuitAutreRef
+    private DatabaseReference userRef, associationProfilePostRef ,userProfilePostRef, associationRef, userPostRef, associationPostRef ,  natureRef , categoryRef , gratuitRef , payantRef , gratuitNourritureRef , gratuitVetementRef , gratuitChaussureRef , gratuitMaisonRef , gratuitAutreRef
             , payantNourritureRef , payantVetementRef , payantChaussureRef , payantMaisonRef ,payantAutreRef , chosenOneRef;
     private FirebaseAuth mAuth;
     private Button updatePost;
@@ -70,6 +70,7 @@ public class AddPostActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
         associationRef = FirebaseDatabase.getInstance().getReference().child("association");
         userPostRef = FirebaseDatabase.getInstance().getReference().child("posts");
+       associationProfilePostRef= FirebaseDatabase.getInstance().getReference().child("associationProfilePosts").child(current_user_id);
         userProfilePostRef = FirebaseDatabase.getInstance().getReference().child("profilePosts").child(current_user_id);
         associationPostRef = FirebaseDatabase.getInstance().getReference().child("associationPosts");
 
@@ -389,6 +390,8 @@ public class AddPostActivity extends AppCompatActivity {
                             }
                         });
 
+
+
                         if (isFree){
 
                             gratuitRef.child(current_user_id + " " + title + "catg" ).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
@@ -499,6 +502,16 @@ public class AddPostActivity extends AppCompatActivity {
                             }
 
                         });
+                        associationProfilePostRef.child(current_user_id + " " + title + " profile").updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                if (task.isSuccessful()){
+                                }else{
+                                    Toast.makeText(AddPostActivity.this, "Problme occured : " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        });
 
 
                     }
@@ -511,6 +524,7 @@ public class AddPostActivity extends AppCompatActivity {
 
                 }
             });
+
         }
 
     }

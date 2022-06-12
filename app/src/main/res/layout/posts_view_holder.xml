@@ -15,11 +15,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imgPost"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_height="160dp"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
             tools:background="@drawable/post_img"
 
             />
@@ -36,23 +37,22 @@
             android:textColor="@color/black"/>
         <TextView
             android:id="@+id/txtPrice"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="340"
+            android:layout_marginLeft="25dp"/>
 
 
         <TextView
-            android:id="@+id/txtUsername"
+            android:id="@+id/txtUsernamePost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Melissa"
-            android:fontFamily="@font/montserrat_bold"
             android:layout_marginLeft="25dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Melissa"
 
 
             />
-
-
-
 
 
     </LinearLayout>

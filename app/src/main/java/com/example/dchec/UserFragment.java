@@ -1,5 +1,6 @@
 package com.example.dchec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,10 +75,21 @@ public class UserFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull Posts model) {
 
+                String postKey = getRef(position).getKey();
+
                 holder.setUser_Name(model.getUserName());
                 holder.setPost_Image(model.getPostImage());
                 holder.setTitle(model.getTitle());
                 holder.setPrice(model.getPrice());
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent clickPost = new Intent(getActivity(),PostActivity.class);
+                        clickPost.putExtra("postKey",postKey);
+                        startActivity(clickPost);
+                    }
+                });
 
 
 

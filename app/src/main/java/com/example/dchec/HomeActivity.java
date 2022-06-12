@@ -37,10 +37,13 @@ import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private String uid="";
+
     private FirebaseAuth mAuth ;
     private DatabaseReference userRef , associationRef;
     private String currentUserId;
     private FloatingActionButton addPostBtn ;
+
 
     private GoogleSignInOptions gso;
     private GoogleSignInClient mGoogleSignInClient;
@@ -67,9 +70,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        uid = getIntent().getStringExtra("uid");
+
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         navigationView = findViewById(R.id.navigation_view);
+
 
 
 
@@ -305,32 +311,27 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.nav_account:
                 sendUserToAccountActivity();
-                Toast.makeText(this, "compte", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_messages:
                 bottomNavigationView.setSelectedItemId(R.id.bottom_nav_messages);
                 toolbar.setVisibility(View.GONE);
                 replaceFragment(new MessageFragment());
-                Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_info:
                 toolbar.setVisibility(View.GONE);
                 replaceFragment(new InfoFragment());
-                Toast.makeText(this, "info", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_home:
                 toolbar.setVisibility(View.VISIBLE);
                 replaceFragment(new PostsFragment());
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_save:
                 toolbar.setVisibility(View.GONE);
                 replaceFragment(new SaveFragment());
-                Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_logout:
@@ -382,5 +383,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-
+    public String getUid() {
+        return uid;
+    }
 }

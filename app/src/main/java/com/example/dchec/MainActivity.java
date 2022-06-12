@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView utilisateurTxt , associationTxt;
 
     private FirebaseAuth firebaseAuth;
-    static SharedPreferences sharedPreferences;
-    public static boolean isSimpleUser;
+    static SharedPreferences sharedPreferences ;
+    public static boolean isSimpleUser = true;
 
 
 
@@ -48,9 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        isSimpleUser = sharedPreferences.getBoolean("Notification",true);
+            isSimpleUser = sharedPreferences.getBoolean("isSimpleUser",true);
+
+
 
 
         utilisateurCard.setOnClickListener(new View.OnClickListener() {

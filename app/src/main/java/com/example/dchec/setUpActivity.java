@@ -147,6 +147,7 @@ public class setUpActivity extends AppCompatActivity {
             userMap.put("phoneNumber",savingPhoneNumber);
             userMap.put("localisation" , savingLocalisation);
             userMap.put("password" , LoginActivity.password);
+            userMap.put("Uid",currentUserId);
 
 
 

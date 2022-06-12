@@ -2,6 +2,7 @@ package com.example.dchec;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MessageActivity extends AppCompatActivity {
@@ -27,8 +29,9 @@ public class MessageActivity extends AppCompatActivity {
     private EditText edtMessageInput;
     private TextView txtChattingWith;
     private ProgressBar progressBar;
-    private ImageView imgToolbar,imgSend,imgArrow;
-
+    private ImageView imgToolbar,imgSend;
+    Button btnArrow;
+    private Boolean isSeen = false;
     private MessageAdapter messageAdapter;
     private ArrayList<Message> messages;
 
@@ -45,7 +48,7 @@ public class MessageActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerMessages);
         imgSend = findViewById(R.id.imgSendMessage);
-        imgArrow = findViewById(R.id.img_arrow);
+        btnArrow = findViewById(R.id.img_arrow);
         edtMessageInput = findViewById(R.id.edtText);
         txtChattingWith = findViewById(R.id.txtChattingWith);
         progressBar= findViewById(R.id.progressMessages);
@@ -55,23 +58,19 @@ public class MessageActivity extends AppCompatActivity {
 
         messages = new ArrayList<>();
 
-        imgArrow.setOnClickListener(new View.OnClickListener() {
+        btnArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
-        if (!edtMessageInput.toString().equals("")){
-            imgSend.setVisibility(View.VISIBLE);
-        }
             imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!edtMessageInput.toString().isEmpty()){
+                String mag = edtMessageInput.getText().toString();
+                if (!mag.equals("")){
                 FirebaseDatabase.getInstance().getReference("messages/"+chatRoomId).push().setValue(new Message(FirebaseAuth.getInstance().getCurrentUser().getEmail(),emailOfRoommate,edtMessageInput.getText().toString()));
                 edtMessageInput.setText("");
-                }else{
-
                 }
             }
         });
@@ -84,7 +83,10 @@ public class MessageActivity extends AppCompatActivity {
 
         setUpChatRoom();
 
+
+
     }
+
 
 
     private void setUpChatRoom(){
@@ -93,13 +95,9 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String myUsername = Objects.requireNonNull(snapshot.getValue(User.class)).getUserName();
-                if(usernameOfTheRoommate.compareTo(myUsername)>0){
+
                     chatRoomId = myUsername + usernameOfTheRoommate;
-                }else if(usernameOfTheRoommate.compareTo(myUsername) == 0){
-                    chatRoomId = myUsername + usernameOfTheRoommate;
-                }else {
-                    chatRoomId = usernameOfTheRoommate + myUsername;
-                }
+
                 attachMessageListener(chatRoomId);
             }
 
@@ -131,5 +129,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

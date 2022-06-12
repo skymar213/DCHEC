@@ -4,6 +4,7 @@ public class User {
     String userName;
     String nickName;
     String email;
+    String Uid;
     String profilePicture;
 
     public User() {
@@ -36,6 +37,14 @@ public class User {
         return userName;
     }
 
+    public String getUid() {
+        return Uid;
+    }
+
+    public void setUid(String uid) {
+        Uid = uid;
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -45,6 +54,8 @@ public class User {
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
+
+
 }
 
 

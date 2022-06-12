@@ -6,10 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,23 +17,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MessageFragment extends Fragment {
     private RecyclerView recycler;
-    private ArrayList<User> users;
+    public  ArrayList<User> users = new ArrayList<>();
+    private ArrayList<String> usersList = new ArrayList<>();
     private ProgressBar progressBar;
-    private usersAdapter usersAdapter;
-    private Button btnBack;
-    usersAdapter.onUserClickListener onUserClickListener;
+    private DatabaseReference userRef,userRef2;
+    String txtUsername,email;
+
+    String uid;
+    private usersMessageAdapter usersMessageAdapter;
+    usersMessageAdapter.onUserClickListener onUserClickListener;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private String myImageUrl;
 
 
     @Nullable
@@ -42,10 +45,39 @@ public class MessageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.message_fragment , container , false);
 
+
+
         progressBar =(ProgressBar) view.findViewById(R.id.progressBar);
         users = new ArrayList<>();
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
-        btnBack = view.findViewById(R.id.btnBack);
+
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(
+                FirebaseAuth.getInstance().getCurrentUser().getUid()
+        );
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String username = snapshot.child("userName").getValue().toString();
+
+                    txtUsername = username;
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        HomeActivity homeActivity = (HomeActivity) getActivity();
+
+       uid = homeActivity.getUid();
+
 
 
 
@@ -60,7 +92,7 @@ public class MessageFragment extends Fragment {
             }
         });
 
-    onUserClickListener = new usersAdapter.onUserClickListener() {
+    onUserClickListener = new usersMessageAdapter.onUserClickListener() {
         @Override
         public void onUserClicked(int position) {
             Intent i = new Intent(getActivity(), MessageActivity.class)
@@ -68,8 +100,7 @@ public class MessageFragment extends Fragment {
                     .putExtra("nom_of_roommate", users.get(position).getUserName())
                     .putExtra("prenom_of_roommate", users.get(position).getNickName())
                     .putExtra("email_of_roommate",users.get(position).getEmail())
-                    .putExtra("image_of_roommate",users.get(position).getProfilePicture())
-                    .putExtra("my_image",myImageUrl)
+
             ;
             startActivity(i);
 
@@ -78,25 +109,32 @@ public class MessageFragment extends Fragment {
         }
     };
     getUsers();
+
         return view;
 }
     private void getUsers(){
-        users.clear();
-        FirebaseDatabase.getInstance().getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usersList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                        users.add(dataSnapshot.getValue(User.class));
+                    if (dataSnapshot != null){
+                        if (dataSnapshot.toString().contains(txtUsername)){
+
+                            Message message = dataSnapshot.getValue(Message.class);
+                            if (message.getSender() != null){
+                                if (message.getSender().toString() == FirebaseAuth.getInstance().getCurrentUser().getEmail().toString()){
+                                    usersList.add(dataSnapshot.getValue(Message.class).getReceiver());
+                                }
+                            }
+
+
+                        }
                     }
+
+
                 }
-
-                usersAdapter = new usersAdapter(users,getContext(),onUserClickListener);
-                recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-                recycler.setAdapter(usersAdapter);
-                progressBar.setVisibility(View.GONE);
-                recycler.setVisibility(View.VISIBLE);
-
 
 
             }
@@ -106,8 +144,39 @@ public class MessageFragment extends Fragment {
 
             }
         });
-    }
+
+        FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users.clear();
+
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+
+                            users.add(dataSnapshot.getValue(User.class));
+                        }
+
+                usersMessageAdapter = new usersMessageAdapter(users,getContext(),onUserClickListener);
+                recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+                recycler.setAdapter(usersMessageAdapter);
+                progressBar.setVisibility(View.GONE);
+                recycler.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+            }
+
+
 }
+
 
 
 

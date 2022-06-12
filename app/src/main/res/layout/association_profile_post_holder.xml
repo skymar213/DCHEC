@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginStart="20dp"
+    android:background="@drawable/user_posts_shape"
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/association_title_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Affaire Scolaire"
+        android:textColor="@color/nav_black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/association_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/association_title_txt"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:text="Association Askil"
+        android:textColor="@color/nav_black"
+        android:textSize="16dp"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/association_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/association_name"
+        android:layout_marginHorizontal="16dp"
+        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        android:gravity="center_vertical"
+        android:text="A la recherche d’un maximum d’affaires scolaires pour les distribuer sur les enfants qui en manquent pour cette rentrée ......... "
+        android:textColor="@color/nav_black">
+
+    </TextView>
+
+
+</RelativeLayout>

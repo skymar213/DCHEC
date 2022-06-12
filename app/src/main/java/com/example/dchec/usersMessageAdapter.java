@@ -12,19 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class usersAdapter extends RecyclerView.Adapter<usersAdapter.usersHolder> {
+public class usersMessageAdapter extends RecyclerView.Adapter<usersMessageAdapter.usersHolder> {
 
     private ArrayList<User> users;
     private  Context context;
     private onUserClickListener onUserClickListener;
 
-    public usersAdapter(ArrayList<User> users, Context context) {
-        this.users = users;
-        this.context = context;
 
-    }
 
-    public usersAdapter(ArrayList<User> users, Context context, usersAdapter.onUserClickListener onUserClickListener) {
+    public usersMessageAdapter(ArrayList<User> users, Context context, usersMessageAdapter.onUserClickListener onUserClickListener) {
         this.users = users;
         this.context = context;
         this.onUserClickListener = onUserClickListener;
@@ -38,7 +34,7 @@ public class usersAdapter extends RecyclerView.Adapter<usersAdapter.usersHolder>
     @NonNull
     @Override
     public usersHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.user_holder, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.user_message_holder, parent, false);
         return new usersHolder(view);
     }
 

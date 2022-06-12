@@ -1,5 +1,6 @@
 package com.example.dchec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,8 @@ public class PostsFragment extends Fragment {
 
     TextView utilisateurTxt , associationTxt;
     ImageButton categoryBtn;
-    Boolean gratuitSelected  , nourritureSelected  , chaussureSelected  , vetementSelected  , maisonSelected  , autreSelected   , categorieAllSelected ;
+    postsAdapter.onPostClickListener onPostClickListener;
+    Boolean gratuitSelected , nourritureSelected  , chaussureSelected  , vetementSelected  , maisonSelected  , autreSelected   , categorieAllSelected ;
 
     private DatabaseReference postRef , natureRef ,categoryRef, gratuitRef , payantRef , gratuitNourritureRef , gratuitVetementRef , gratuitChaussureRef , gratuitMaisonRef , gratuitAutreRef
             , payantNourritureRef , payantVetementRef , payantChaussureRef , payantMaisonRef ,payantAutreRef ;
@@ -40,6 +42,8 @@ public class PostsFragment extends Fragment {
         MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser" , true);
 
         postRef = FirebaseDatabase.getInstance().getReference().child("posts");
+
+
 
         natureRef = FirebaseDatabase.getInstance().getReference().child("nature");
         categoryRef = FirebaseDatabase.getInstance().getReference().child("categorie");

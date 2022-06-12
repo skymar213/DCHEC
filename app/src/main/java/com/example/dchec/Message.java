@@ -5,14 +5,18 @@ public class Message {
     private String Receiver;
     private String context;
 
+
+
+
     public Message(){
 
     }
 
     public Message(String sender, String receiver, String context) {
-        Sender = sender;
-        Receiver = receiver;
+        this.Sender = sender;
+        this.Receiver = receiver;
         this.context = context;
+
     }
 
     public String getSender() {
@@ -38,4 +42,6 @@ public class Message {
     public void setContext(String context) {
         this.context = context;
     }
+
+
 }

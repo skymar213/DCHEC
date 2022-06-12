@@ -1,12 +1,13 @@
 package com.example.dchec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,15 +25,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProfileFragment extends Fragment {
-    TextView txtUsername, txtPhoneNum;
-    Button btnContacter;
+    TextView txtUsername;
+    String postTitle, postImg,poster;
     RecyclerView recyclerPost;
+    postsAdapter.onPostClickListener onPostClickListener;
+    DatabaseReference userRef , associationRef;
 
-    DatabaseReference userRef;
 
 
     @Nullable
@@ -40,27 +39,60 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser" , true);
 
         recyclerPost = view.findViewById(R.id.recyclerPosts);
         recyclerPost.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
-        DisplayAllUserPosts();
-        txtPhoneNum = view.findViewById(R.id.txtPhoneNum);
-        txtUsername = view.findViewById(R.id.txtUsername);
-        btnContacter = view.findViewById(R.id.btnContacter);
+        txtUsername = view.findViewById(R.id.txtUsernameProfile);
+
+        txtUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), FirebaseAuth.getInstance().getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         userRef = FirebaseDatabase.getInstance().getReference().child("users").child(
                 FirebaseAuth.getInstance().getCurrentUser().getUid()
         );
+        associationRef = FirebaseDatabase.getInstance().getReference().child("association").child(
+                FirebaseAuth.getInstance().getCurrentUser().getUid()
+        );
 
-        userRef.addValueEventListener(new ValueEventListener() {
+
+
+
+
+
+        if(MainActivity.isSimpleUser){
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String username = snapshot.child("userName").getValue().toString();
+                        txtUsername.setText(username);
+                        DisplayAllUserPosts();
+
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else{
+        }
+        associationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     String username = snapshot.child("userName").getValue().toString();
                     txtUsername.setText(username);
+                    DisplayAllAssociationPosts();
 
-                    String phoneNumber = snapshot.child("phoneNumber").getValue().toString();
-                    txtPhoneNum.setText(phoneNumber);
+
                 }
             }
 
@@ -71,22 +103,39 @@ public class ProfileFragment extends Fragment {
         });
 
 
+
+
+
+
+
         return view;
     }
 
 
     private void DisplayAllUserPosts() {
 
-        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(FirebaseDatabase.getInstance().getReference().child("profilePosts"), Posts.class).build();
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(FirebaseDatabase.getInstance().getReference().child("profilePosts").child(FirebaseAuth.getInstance().getCurrentUser().getUid()), Posts.class).build();
 
         FirebaseRecyclerAdapter<Posts, ProfileFragment.UserPostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, UserPostViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ProfileFragment.UserPostViewHolder holder, int position, @NonNull Posts model) {
 
+                String postKey = getRef(position).getKey();
+
                 holder.setUserName(model.getUserName());
                 holder.setPost_Image(model.getPostImage());
                 holder.setTitle(model.getTitle());
                 holder.setPrice(model.getPrice());
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent clickPost = new Intent(getActivity(),MyPostActivty.class);
+                        clickPost.putExtra("postKey",postKey);
+                        startActivity(clickPost);
+                    }
+                });
+
 
 
             }
@@ -113,7 +162,7 @@ public class ProfileFragment extends Fragment {
         }
 
         public void setUserName(String user_Name){
-            TextView userName = mView.findViewById(R.id.txtUsername);
+            TextView userName = mView.findViewById(R.id.txtUsernamePost);
             userName.setText(user_Name);
         }
 
@@ -130,12 +179,46 @@ public class ProfileFragment extends Fragment {
 
         public void setPost_Image( String post_Image){
             ImageView PostImage = mView.findViewById(R.id.imgPost);
-            Picasso.get().load(post_Image).error(R.drawable.post_img).placeholder(R.drawable.post_img).into(PostImage);
+            Picasso.get().load(post_Image).error(R.drawable.image_error).placeholder(R.drawable.image_error).into(PostImage);
         }
 
 
 
     }
+    private void DisplayAllAssociationPosts() {
+
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(FirebaseDatabase.getInstance().getReference().child("associationProfilePosts").child(FirebaseAuth.getInstance().getCurrentUser().getUid()), Posts.class).build();
+
+        FirebaseRecyclerAdapter<Posts , AssociationFragment.PostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, AssociationFragment.PostViewHolder>(options)
+
+
+        {
+            @Override
+            protected void onBindViewHolder(@NonNull AssociationFragment.PostViewHolder holder, int position, @NonNull Posts model) {
+
+                holder.setUser_Name(model.getUserName());
+                holder.setTitle(model.getTitle());
+                holder.setDescription(model.getDescription());
+
+
+
+            }
+
+            @NonNull
+            @Override
+            public AssociationFragment.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.association_profile_post_holder,parent,false);
+                return new AssociationFragment.PostViewHolder(view);
+            }
+        };
+
+        firebaseRecyclerAdapter.startListening();
+        recyclerPost.setAdapter(firebaseRecyclerAdapter);
+    }
+
+
+
+
 
     @Override
     public void onResume() {
@@ -148,6 +231,8 @@ public class ProfileFragment extends Fragment {
         super.onStart();
         DisplayAllUserPosts();
     }
+
+
 
 
 
