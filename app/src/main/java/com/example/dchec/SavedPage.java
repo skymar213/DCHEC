@@ -1,5 +1,6 @@
 package com.example.dchec;
 
+<<<<<<< HEAD
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,10 +30,19 @@ public class SavedPage extends AppCompatActivity {
     ImageButton arrowBack ;
     RecyclerView savedPostsRecycler;
 
+=======
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+public class SavedPage extends AppCompatActivity {
+
+>>>>>>> origin/master
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_page);
+<<<<<<< HEAD
 
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
@@ -132,5 +142,7 @@ public class SavedPage extends AppCompatActivity {
 
 
 
+=======
+>>>>>>> origin/master
     }
 }
