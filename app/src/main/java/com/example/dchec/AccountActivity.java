@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -190,6 +191,8 @@ public class AccountActivity extends AppCompatActivity {
         userMap.put("phoneNumber",userphonenumber);
         userMap.put("localisation" , userlocalisation);
         userMap.put("password" , userpassword);
+
+
 
         accountAssociationRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
             @Override

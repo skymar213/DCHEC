@@ -12,32 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dchec">
         <activity
-            android:name=".HisAssoProfile"
-            android:exported="false" />
-        <activity
-            android:name=".AddContact"
-            android:exported="false" />
-        <activity
-            android:name=".MyPostActivty"
-            android:exported="false" />
-        <activity
-            android:name=".PostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HisProfile"
-            android:exported="false" />
-        <activity
             android:name=".AddPostActivity"
-            android:exported="false"
-            android:parentActivityName=".HomeActivity" />
-        <activity
-            android:name=".MessageActivity"
-            android:exported="false"
-            android:parentActivityName=".HomeActivity" />
+            android:parentActivityName=".HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
+            android:windowSoftInputMode="adjustPan|adjustResize">
+        </activity>
         <activity
             android:name=".ForgetPassword"
             android:exported="true"
