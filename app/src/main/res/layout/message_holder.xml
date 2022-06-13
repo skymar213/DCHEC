@@ -11,25 +11,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ccLayout"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_height="wrap_content">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profile_cardView"
-            android:background="@color/white"
-
-            android:layout_marginHorizontal="10dp"
             android:layout_width="35dp"
-            app:cardCornerRadius="35dp"
+
+            android:layout_height="35dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/white"
             android:backgroundTint="#065356"
-            android:layout_height="35dp">
+            app:cardCornerRadius="35dp">
 
             <ImageView
                 android:id="@+id/small_profile_img"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile_img"
-                android:layout_height="match_parent"/>
+                android:src="@drawable/profile_img" />
 
         </androidx.cardview.widget.CardView>
 
@@ -37,22 +39,19 @@
             android:id="@+id/txt_message_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="gag ga gagaw wwa gaagagagwgga agg agagawaggagawgawgwagaw"
+            android:layout_marginHorizontal="9dp"
             android:maxWidth="200dp"
             android:padding="8dp"
             android:textColor="@color/black"
-            android:layout_marginHorizontal="9dp"
-            />
+            tools:text="gag ga gagaw wwa gaagagagwgga agg agagawaggagawgawgwagaw" />
+
         <TextView
             android:id="@+id/txtSeen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="seen"
-            android:visibility="gone"
             android:textColor="@color/black"
-          />
-
-
+            android:visibility="gone" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

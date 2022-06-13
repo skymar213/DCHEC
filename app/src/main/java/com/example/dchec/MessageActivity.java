@@ -44,8 +44,14 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate");
-        emailOfRoommate = getIntent().getStringExtra("email_of_roommate2");
+        if (SearchFragment.fromSearch){
+            usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate");
+            emailOfRoommate = getIntent().getStringExtra("email_of_roommate2");
+            SearchFragment.fromSearch = false;
+        }else {
+            usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate1");
+            emailOfRoommate = getIntent().getStringExtra("email_of_roommate1");
+        }
 
         recyclerView = findViewById(R.id.recyclerMessages);
         imgSend = findViewById(R.id.imgSendMessage);
@@ -96,10 +102,16 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String myUsername = Objects.requireNonNull(snapshot.getValue(User.class)).getUserName();
+                if (usernameOfTheRoommate != null){
+                    if(usernameOfTheRoommate.compareTo(myUsername)>=0){
+                        chatRoomId = myUsername +  usernameOfTheRoommate;
+                    }else {
+                        chatRoomId = usernameOfTheRoommate + myUsername;
+                    }
 
-                    chatRoomId = myUsername + usernameOfTheRoommate;
+                    attachMessageListener(chatRoomId);
+                }
 
-                attachMessageListener(chatRoomId);
             }
 
             @Override

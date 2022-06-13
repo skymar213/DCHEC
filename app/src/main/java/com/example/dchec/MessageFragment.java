@@ -35,9 +35,8 @@ public class MessageFragment extends Fragment {
     private ProgressBar progressBar;
     private DatabaseReference currentUserRef,userMessageRef , userRef;
     String currentUserId;
-    String txtUsername,email;
+    String txtUsername;
 
-    String uid;
     private usersMessageAdapter usersMessageAdapter;
     usersMessageAdapter.onUserClickListener onUserClickListener;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -59,7 +58,7 @@ public class MessageFragment extends Fragment {
         );
 
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        userMessageRef = FirebaseDatabase.getInstance().getReference().child("userMessages").child(currentUserId);
+        userMessageRef = FirebaseDatabase.getInstance().getReference().child("userMessages");
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
 
         currentUserRef.addValueEventListener(new ValueEventListener() {
@@ -104,9 +103,9 @@ public class MessageFragment extends Fragment {
         public void onUserClicked(int position) {
             Intent i = new Intent(getActivity(), MessageActivity.class)
 
-                    .putExtra("nom_of_roommate", users.get(position).getUserName())
+                    .putExtra("nom_of_roommate1", users.get(position).getUserName())
                     .putExtra("prenom_of_roommate", users.get(position).getNickName())
-                    .putExtra("email_of_roommate",users.get(position).getEmail())
+                    .putExtra("email_of_roommate1",users.get(position).getUid())
 
             ;
             startActivity(i);
@@ -166,9 +165,10 @@ public class MessageFragment extends Fragment {
                 users.clear();
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                        users.add(dataSnapshot.getValue(User.class));
+                        if (dataSnapshot.getValue(User.class).getUid() != FirebaseAuth.getInstance().getCurrentUser().getUid()){
+                            users.add(dataSnapshot.getValue(User.class));
+                        }
                     }
-
 
 
                 usersMessageAdapter = new usersMessageAdapter(users,getContext(),onUserClickListener);
@@ -188,6 +188,7 @@ public class MessageFragment extends Fragment {
 
 
 
+
             }
 
     private void addUserToUserMessages(String othersUid) {
@@ -200,6 +201,7 @@ public class MessageFragment extends Fragment {
                     String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
                     String myLocalisation = snapshot.child("localisation").getValue().toString();
                     String myPassword = snapshot.child("password").getValue().toString();
+                    String myUid = snapshot.child("Uid").getValue().toString();
 
                     HashMap hashMap= new HashMap();
                     hashMap.put("userName",myName);
@@ -207,8 +209,44 @@ public class MessageFragment extends Fragment {
                     hashMap.put("password",myPassword);
                     hashMap.put("nickName",myNickName);
                     hashMap.put("localisation",myLocalisation);
+                    hashMap.put("Uid",myUid);
 
-                    userMessageRef.child(othersUid).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                    userMessageRef.child(currentUserId).child(othersUid).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+
+                        }
+                    });
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String myName = snapshot.child("userName").getValue().toString();
+                    String myNickName = snapshot.child("nickName").getValue().toString();
+                    String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                    String myLocalisation = snapshot.child("localisation").getValue().toString();
+                    String myPassword = snapshot.child("password").getValue().toString();
+                    String myUid = snapshot.child("Uid").getValue().toString();
+
+                    HashMap hashMap= new HashMap();
+                    hashMap.put("userName",myName);
+                    hashMap.put("phoneNumber",myPhoneNumber);
+                    hashMap.put("password",myPassword);
+                    hashMap.put("nickName",myNickName);
+                    hashMap.put("localisation",myLocalisation);
+                    hashMap.put("Uid",myUid);
+
+                    userMessageRef.child(othersUid).child(currentUserId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
 

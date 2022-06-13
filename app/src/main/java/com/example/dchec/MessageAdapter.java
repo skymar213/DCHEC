@@ -55,7 +55,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
 
         ConstraintLayout constraintLayout = holder.ccll;
 
-        if (messages.get(position).getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+        if (messages.get(position).getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
             message.setBackgroundResource(R.drawable.my_msg_back);
             message.setTextColor(ContextCompat.getColor(context,white));
 
@@ -73,7 +73,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             constraintSet.connect(R.id.txtSeen,ConstraintSet.RIGHT,R.id.txt_message_content,ConstraintSet.RIGHT);
             constraintSet.applyTo(constraintLayout);
 
-        }else {
+        }else if (messages.get(position).getReceiver().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
             message.setBackgroundResource(R.drawable.your_msg_back);
             message.setTextColor(ContextCompat.getColor(context,black));
 
@@ -88,9 +88,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             constraintSet.connect(R.id.txtSeen,ConstraintSet.TOP,R.id.txt_message_content,ConstraintSet.BOTTOM);
             constraintSet.connect(R.id.txtSeen,ConstraintSet.LEFT,R.id.txt_message_content,ConstraintSet.LEFT);
             constraintSet.applyTo(constraintLayout);
-
-
         }
+
+
+
+
+
 
     }
 

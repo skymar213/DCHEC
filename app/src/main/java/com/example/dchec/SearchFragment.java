@@ -39,6 +39,7 @@ public class SearchFragment extends Fragment {
     ArrayList<User> associations = new ArrayList<>();
     usersSearchAdapter.onUserClickListener onUserSearchClickListener;
     usersSearchAdapter usersMessageAdapter,associationAdapter;
+    static boolean fromSearch=false;
 
     @Nullable
     @Override
@@ -132,6 +133,7 @@ public class SearchFragment extends Fragment {
                             .putExtra("uid", users.get(position).getUid())
                             .putExtra("prenom_of_roommate", users.get(position).getNickName())
                             .putExtra("email_of_roommate", users.get(position).getUid());
+                    fromSearch = true;
                     startActivity(i);
                 }else{
 
@@ -140,6 +142,8 @@ public class SearchFragment extends Fragment {
                             .putExtra("uid", associations.get(position).getUid())
                             .putExtra("prenom_of_roommate", associations.get(position).getNickName())
                             .putExtra("email_of_roommate", associations.get(position).getUid());
+                    fromSearch = true;
+
                     startActivity(i);
                 }
 
