@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -72,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
 
         uid = getIntent().getStringExtra("uid");
 
+        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser",true);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);

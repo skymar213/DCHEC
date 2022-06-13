@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -16,8 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,13 +26,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MessageFragment extends Fragment {
     private RecyclerView recycler;
     public  ArrayList<User> users = new ArrayList<>();
     private ArrayList<String> usersList = new ArrayList<>();
     private ProgressBar progressBar;
-    private DatabaseReference userRef,userRef2;
+    private DatabaseReference currentUserRef,userMessageRef , userRef;
+    String currentUserId;
     String txtUsername,email;
 
     String uid;
@@ -51,11 +54,15 @@ public class MessageFragment extends Fragment {
         users = new ArrayList<>();
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
 
-        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(
+        currentUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(
                 FirebaseAuth.getInstance().getCurrentUser().getUid()
         );
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userMessageRef = FirebaseDatabase.getInstance().getReference().child("userMessages").child(currentUserId);
+        userRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        currentUserRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -76,7 +83,7 @@ public class MessageFragment extends Fragment {
 
         HomeActivity homeActivity = (HomeActivity) getActivity();
 
-       uid = homeActivity.getUid();
+
 
 
 
@@ -118,15 +125,23 @@ public class MessageFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usersList.clear();
+                String othersUid;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     if (dataSnapshot != null){
                         if (dataSnapshot.toString().contains(txtUsername)){
 
-                            Message message = dataSnapshot.getValue(Message.class);
-                            if (message.getSender() != null){
-                                if (message.getSender().toString() == FirebaseAuth.getInstance().getCurrentUser().getEmail().toString()){
-                                    usersList.add(dataSnapshot.getValue(Message.class).getReceiver());
-                                }
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                Message message = dataSnapshot1.getValue(Message.class);
+
+                                    if (message.getSender()== FirebaseAuth.getInstance().getCurrentUser().getUid().toString()){
+                                        othersUid = dataSnapshot1.getValue(Message.class).getReceiver();
+                                        addUserToUserMessages(othersUid);
+                                    }else if (message.getReceiver() == FirebaseAuth.getInstance().getCurrentUser().getUid().toString()){
+                                        othersUid = dataSnapshot1.getValue(Message.class).getSender();
+                                        addUserToUserMessages(othersUid);
+                                    }
+
+
                             }
 
 
@@ -145,15 +160,16 @@ public class MessageFragment extends Fragment {
             }
         });
 
-        FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("userMessages").child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 users.clear();
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        users.add(dataSnapshot.getValue(User.class));
+                    }
 
-                            users.add(dataSnapshot.getValue(User.class));
-                        }
+
 
                 usersMessageAdapter = new usersMessageAdapter(users,getContext(),onUserClickListener);
                 recycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -173,6 +189,42 @@ public class MessageFragment extends Fragment {
 
 
             }
+
+    private void addUserToUserMessages(String othersUid) {
+        userRef.child(othersUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String myName = snapshot.child("userName").getValue().toString();
+                    String myNickName = snapshot.child("nickName").getValue().toString();
+                    String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                    String myLocalisation = snapshot.child("localisation").getValue().toString();
+                    String myPassword = snapshot.child("password").getValue().toString();
+
+                    HashMap hashMap= new HashMap();
+                    hashMap.put("userName",myName);
+                    hashMap.put("phoneNumber",myPhoneNumber);
+                    hashMap.put("password",myPassword);
+                    hashMap.put("nickName",myNickName);
+                    hashMap.put("localisation",myLocalisation);
+
+                    userMessageRef.child(othersUid).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+
+                        }
+                    });
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
 }

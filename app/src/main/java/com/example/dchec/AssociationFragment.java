@@ -1,9 +1,11 @@
 package com.example.dchec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +38,10 @@ public class AssociationFragment extends Fragment {
         View view = inflater.inflate(R.layout.association_fragment, container ,false);
 
         postList = view.findViewById(R.id.association_post_recycler_view);
+
+
+
+
         postList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
@@ -67,6 +73,15 @@ public class AssociationFragment extends Fragment {
                 holder.setTitle(model.getTitle());
                 holder.setDescription(model.getDescription());
 
+                holder.mView.findViewById(R.id.btnContacterAsso).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(getActivity(),MessageActivity.class)
+                                .putExtra("nom_of_roommate",model.getUserName())
+                                ;
+                        startActivity(i);
+                    }
+                });
 
 
             }

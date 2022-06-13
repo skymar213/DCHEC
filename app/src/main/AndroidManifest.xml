@@ -16,6 +16,26 @@
             android:parentActivityName=".HomeActivity"
             android:exported="false" />
         <activity
+            android:name=".PostActivity"
+            android:parentActivityName=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MessageActivity"
+            android:parentActivityName=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HisProfile"
+            android:parentActivityName=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyPostActivty"
+            android:parentActivityName=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HisAssoProfile"
+            android:parentActivityName=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan|adjustResize">
@@ -24,10 +44,7 @@
             android:name=".ForgetPassword"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".PostActivity"
-            android:exported="true"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity
             android:name=".setUpActivity"
             android:exported="true"

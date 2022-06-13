@@ -30,7 +30,8 @@ public class HisProfile extends AppCompatActivity {
     TextView txtHisUsername;
     Button btnContacter;
     RecyclerView recyclerHisPost;
-    String clickedUid ="" ;
+    String emailOfRoommate,clickedUid ="" ;
+    static Boolean b=false;
 
 
 
@@ -43,9 +44,11 @@ public class HisProfile extends AppCompatActivity {
 
         recyclerHisPost = findViewById(R.id.recyclerHisPosts);
         clickedUid =getIntent().getStringExtra("uid");
+        emailOfRoommate =getIntent().getStringExtra("email_of_roommate");
         recyclerHisPost.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
 
         txtHisUsername = findViewById(R.id.txtYourUsernamePost);
+
         btnContacter = findViewById(R.id.btnContacter);
 
         btnContacter.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +56,7 @@ public class HisProfile extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplication(),MessageActivity.class);
                 intent.putExtra("nom_of_roommate",txtHisUsername.getText().toString());
+                intent.putExtra("email_of_roommate2",emailOfRoommate);
                 startActivity(intent);
             }
         });
@@ -93,6 +97,8 @@ public class HisProfile extends AppCompatActivity {
                         public void onClick(View view) {
                             Intent clickPost = new Intent(HisProfile.this, PostActivity.class);
                             clickPost.putExtra("postKey", postKey);
+                            clickPost.putExtra("uid",clickedUid);
+                            b=true;
                             startActivity(clickPost);
                         }
                     });

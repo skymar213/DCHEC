@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +45,7 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
         usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate");
-        emailOfRoommate = getIntent().getStringExtra("email_of_roommate");
+        emailOfRoommate = getIntent().getStringExtra("email_of_roommate2");
 
         recyclerView = findViewById(R.id.recyclerMessages);
         imgSend = findViewById(R.id.imgSendMessage);
@@ -69,7 +70,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String mag = edtMessageInput.getText().toString();
                 if (!mag.equals("")){
-                FirebaseDatabase.getInstance().getReference("messages/"+chatRoomId).push().setValue(new Message(FirebaseAuth.getInstance().getCurrentUser().getEmail(),emailOfRoommate,edtMessageInput.getText().toString()));
+                FirebaseDatabase.getInstance().getReference("messages/"+chatRoomId).push().setValue(new Message(FirebaseAuth.getInstance().getCurrentUser().getUid(),emailOfRoommate,edtMessageInput.getText().toString()));
                 edtMessageInput.setText("");
                 }
             }

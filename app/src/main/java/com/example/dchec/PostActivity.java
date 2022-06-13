@@ -30,7 +30,7 @@ public class PostActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     String currentUserId ;
     DatabaseReference savedPostRef;
-    private String postKey;
+    private String postKey,uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class PostActivity extends AppCompatActivity {
         savedPostRef = FirebaseDatabase.getInstance().getReference().child("savedPosts").child(currentUserId);
 
         postKey = getIntent().getStringExtra("postKey");
+        uid = getIntent().getStringExtra("uid");
         txtDescription = findViewById(R.id.txtDescription);
         postImg = findViewById(R.id.imgPostActivity);
         txtPoster = findViewById(R.id.txtPostPoster);
@@ -60,27 +61,57 @@ public class PostActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        if (HisProfile.b){
+            FirebaseDatabase.getInstance().getReference().child("profilePosts").child(uid).child(postKey).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.hasChildren()){
+                        String description = snapshot.child("description").getValue().toString();
+                        String image = snapshot.child("postImage").getValue().toString();
+                        String title = snapshot.child("title").getValue().toString();
+                        String poster = snapshot.child("userName").getValue().toString();
 
-        FirebaseDatabase.getInstance().getReference().child("posts").child(postKey).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 String description = snapshot.child("description").getValue().toString();
-                 String image = snapshot.child("postImage").getValue().toString();
-                 String title = snapshot.child("title").getValue().toString();
-                 String poster = snapshot.child("userName").getValue().toString();
+                        txtDescription.setText(description);
+                        Picasso.get().load(image).into(postImg);
+                        txtTitle.setText(title);
+                        txtPoster.setText(poster);
+                        HisProfile.b = false;
+                    }
 
-                 txtDescription.setText(description);
-                 Picasso.get().load(image).into(postImg);
-                 txtTitle.setText(title);
-                 txtPoster.setText(poster);
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }else{
+            FirebaseDatabase.getInstance().getReference().child("posts").child(postKey).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.hasChildren()){
+                        String description = snapshot.child("description").getValue().toString();
+                        String image = snapshot.child("postImage").getValue().toString();
+                        String title = snapshot.child("title").getValue().toString();
+                        String poster = snapshot.child("userName").getValue().toString();
+
+                        txtDescription.setText(description);
+                        Picasso.get().load(image).into(postImg);
+                        txtTitle.setText(title);
+                        txtPoster.setText(poster);
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
 
         btnContacter.setOnClickListener(new View.OnClickListener() {
             @Override

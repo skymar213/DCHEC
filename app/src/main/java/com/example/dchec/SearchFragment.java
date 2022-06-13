@@ -131,7 +131,7 @@ public class SearchFragment extends Fragment {
                             .putExtra("nom_of_roommate", users.get(position).getUserName())
                             .putExtra("uid", users.get(position).getUid())
                             .putExtra("prenom_of_roommate", users.get(position).getNickName())
-                            .putExtra("email_of_roommate", users.get(position).getEmail());
+                            .putExtra("email_of_roommate", users.get(position).getUid());
                     startActivity(i);
                 }else{
 
@@ -139,7 +139,7 @@ public class SearchFragment extends Fragment {
                             .putExtra("nom_of_roommate", associations.get(position).getUserName())
                             .putExtra("uid", associations.get(position).getUid())
                             .putExtra("prenom_of_roommate", associations.get(position).getNickName())
-                            .putExtra("email_of_roommate", associations.get(position).getEmail());
+                            .putExtra("email_of_roommate", associations.get(position).getUid());
                     startActivity(i);
                 }
 
