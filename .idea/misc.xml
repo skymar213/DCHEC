@@ -50,6 +50,7 @@
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/drawable/post_holder_back.xml" value="0.1415" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/drawable/post_image_shape.xml" value="0.1415" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/drawable/recupirer.xml" value="0.1415" />
+        <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/drawable/save_post_shape.xml" value="0.1" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/drawable/splash.xml" value="0.1" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/drawable/user_posts_shape.xml" value="0.1415" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/drawable/your_msg_back.xml" value="0.141" />
@@ -65,14 +66,14 @@
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/activity_main.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/activity_message.xml" value="0.2625139043381535" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/activity_my_post_activty.xml" value="0.14947916666666666" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/activity_post.xml" value="0.22" />
+        <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/activity_post.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/activity_saved_page.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/activity_set_up.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/add_post_tool_bar.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/association_post_holder.xml" value="0.22" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/association_profile_post_holder.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/info_fragment.xml" value="0.16354166666666667" />
-        <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/message_fragment.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/message_fragment.xml" value="0.26348547717842324" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/message_holder.xml" value="0.35269709543568467" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/navigation_header.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/posts_view_holder.xml" value="0.3333333333333333" />
@@ -80,6 +81,7 @@
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/save_fragment.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/save_post_holder.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/search_fragment.xml" value="0.12" />
+        <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/sheet_dialog_layout.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/user_fragment.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/user_holder.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/dell/AndroidStudioProjects/DchecMB/app/src/main/res/layout/user_message_holder.xml" value="0.16354166666666667" />

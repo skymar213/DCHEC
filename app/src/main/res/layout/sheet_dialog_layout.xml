@@ -141,7 +141,7 @@
                     android:id="@+id/categorie_all_txt"
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
-                    android:text="All"
+                    android:text="Tout"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18dp"

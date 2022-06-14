@@ -273,8 +273,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if(!isProblem){
-            progressDialog.setTitle("Please wait ..");
-            progressDialog.setMessage("loging in  on progress ...");
+            progressDialog.setTitle("svp attendez ..");
+            progressDialog.setMessage("Connexion en cours ...");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
 
@@ -282,11 +282,11 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "you are loged in", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Vous etes connecté", Toast.LENGTH_SHORT).show();
                             sendUserToHomeActivity();
                             progressDialog.dismiss();
                     }else {
-                        Toast.makeText(LoginActivity.this, "eurreur : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "erreur : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }
@@ -325,7 +325,7 @@ public class LoginActivity extends AppCompatActivity {
             confirmPasswordText.setVisibility(View.VISIBLE);
         }else if( !password.equals(confirmPassword)){
             confirmPasswordText.setVisibility(View.VISIBLE);
-            Toast.makeText(LoginActivity.this, "your  password doesn't match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Mot de passe invalide", Toast.LENGTH_SHORT).show();
         } else {
             confirmPasswordText.setVisibility(View.GONE);
         }
@@ -340,8 +340,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!isProblem){
 
-            progressDialog.setTitle("Please wait ..");
-            progressDialog.setMessage("Creating account on progress ...");
+            progressDialog.setTitle("Svp Attendez ...");
+            progressDialog.setMessage("Inscription en cours...");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(true);
 
@@ -353,7 +353,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
-                                    Toast.makeText(LoginActivity.this, "loged in successfully , please verify you email adresse ", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginActivity.this, "Connexion avec succès, vérifiez votre e-mail", Toast.LENGTH_LONG).show();
                                     progressDialog.dismiss();
                                     sendUserToSetUpActivity();
                                 }else{
@@ -365,7 +365,7 @@ public class LoginActivity extends AppCompatActivity {
                         });
 
                     } else {
-                        Toast.makeText(LoginActivity.this, "error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "erreur : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }

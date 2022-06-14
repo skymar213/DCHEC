@@ -155,5 +155,22 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
 
+        associationCard.setCardBackgroundColor(getResources().getColor(R.color.white));
+        associationTxt.setTextColor(getResources().getColor(R.color.main_color));
+        associationCard.setCardElevation(0);
+        associationCard.setElevation(0);
+        associationCard.animate().scaleX(0.9f);
+        associationCard.animate().scaleY(0.9f);
+
+        utilisateurCard.setCardBackgroundColor(getResources().getColor(R.color.white));
+        utilisateurTxt.setTextColor(getResources().getColor(R.color.main_color));
+        utilisateurCard.setCardElevation(0);
+        utilisateurCard.setElevation(0);
+        utilisateurCard.animate().scaleX(0.9f);
+        utilisateurCard.animate().scaleY(0.9f);
+    }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ public class MessageFragment extends Fragment {
     private DatabaseReference currentUserRef,userMessageRef , userRef , associationRef;
     String currentUserId;
     String txtUsername;
-    Button btnUtili,btnAsso;
+    TextView btnUtili,btnAsso;
 
     boolean utilisateurClicked = true , associationClicked = false;
 
@@ -158,46 +159,38 @@ public class MessageFragment extends Fragment {
             getAssociations();
         }
 
-        btnAsso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    btnAsso.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            getAssociations();
 
-                getAssociations();
+            associationClicked = true;
+            utilisateurClicked = false;
+            recyclerAsso.setVisibility(View.VISIBLE);
 
-                associationClicked = true;
-                utilisateurClicked = false;
-                recyclerAsso.setVisibility(View.VISIBLE);
+            recycler.setVisibility(View.GONE);
 
-                recycler.setVisibility(View.GONE);
+            btnAsso.setTextColor(getResources().getColor(R.color.main_color));
+            btnUtili.setTextColor(getResources().getColor(R.color.hint_grey));
+        }
+    });
+      btnUtili.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              getUsers();
+              utilisateurClicked=true;
+              associationClicked=false;
+              recycler.setVisibility(View.VISIBLE);
 
-                btnAsso.setBackgroundResource(R.drawable.selected_cat);
-                btnAsso.setTextColor(getResources().getColor(R.color.white));
-                btnUtili.setBackgroundResource(R.drawable.search_back);
-                btnUtili.setTextColor(getResources().getColor(R.color.black));
+              recyclerAsso.setVisibility(View.GONE);
 
+              btnAsso.setTextColor(getResources().getColor(R.color.hint_grey));
 
-            }
-        });
-        btnUtili.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                getUsers();
-                utilisateurClicked=true;
-                associationClicked=false;
-                recycler.setVisibility(View.VISIBLE);
-
-                recyclerAsso.setVisibility(View.GONE);
-
-                btnAsso.setBackgroundResource(R.drawable.search_back);
-                btnAsso.setTextColor(getResources().getColor(R.color.black));
-
-                btnUtili.setBackgroundResource(R.drawable.selected_cat);
-                btnUtili.setTextColor(getResources().getColor(R.color.white));
+              btnUtili.setTextColor(getResources().getColor(R.color.main_color));
 
 
-            }
-        });
+          }
+      });
 
 
 

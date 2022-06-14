@@ -1,5 +1,6 @@
 package com.example.dchec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -52,6 +53,7 @@ public class MessageActivity extends AppCompatActivity {
                 usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate");
                 emailOfRoommate = getIntent().getStringExtra("email_of_roommate2");
             SearchFragment.fromSearch = false;
+
         }else if (PostActivity.fromPost){
             usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate3");
             emailOfRoommate = getIntent().getStringExtra("email_of_roommate3");

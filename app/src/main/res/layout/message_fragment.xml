@@ -9,8 +9,9 @@
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:background="@drawable/message_back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,39 +40,36 @@
         app:layout_constraintStart_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
-    <Button
+    <TextView
         android:id="@+id/btnUtilisateur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/selected_cat"
-        android:layout_marginStart="11dp"
+        android:layout_marginStart="60dp"
+        android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:padding="5dp"
-        android:layout_marginTop="276dp"
+        android:text="Utilisateur"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:layout_marginBottom="16dp"
-        android:text="utilisateur"
-        app:layout_constraintEnd_toStartOf="@+id/btnAsso"
+        android:textColor="@color/main_color"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-    <Button
+    <TextView
         android:id="@+id/btnAsso"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:layout_marginTop="276dp"
-        android:layout_marginEnd="6dp"
-        android:background="@drawable/search_back"
+        android:layout_marginEnd="60dp"
+        android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:padding="5dp"
-        android:layout_marginBottom="16dp"
-        android:text="association"
+        android:text="Association"
+        android:textColor="@color/hint_grey"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnUtilisateur"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
@@ -81,8 +79,10 @@
         android:background="@drawable/transparent_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/btnUtilisateur"
+        app:layout_constraintVertical_bias="0.0"
         tools:context=".FriendsActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,7 +92,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,10 +103,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerAsso"
-                android:visibility="gone"
-
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+
+                android:layout_height="0dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -122,8 +122,10 @@
                 android:layout_height="200dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.341"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.154" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
