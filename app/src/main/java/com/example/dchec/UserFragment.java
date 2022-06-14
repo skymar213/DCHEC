@@ -87,6 +87,7 @@ public class UserFragment extends Fragment {
                     public void onClick(View view) {
                         Intent clickPost = new Intent(getActivity(),PostActivity.class);
                         clickPost.putExtra("postKey",postKey);
+                        clickPost.putExtra("Uid",model.getUid());
                         startActivity(clickPost);
                     }
                 });

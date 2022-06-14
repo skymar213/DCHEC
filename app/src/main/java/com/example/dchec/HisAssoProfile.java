@@ -53,6 +53,7 @@ public class HisAssoProfile extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplication(),MessageActivity.class);
                 intent.putExtra("nom_of_roommate",txtHisUsername.getText().toString());
+                intent.putExtra("email_of_roommate2",clickedUid);
                 startActivity(intent);
             }
         });

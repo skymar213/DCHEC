@@ -2,9 +2,11 @@ package com.example.dchec;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,16 +31,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MessageFragment extends Fragment {
-    private RecyclerView recycler;
+    private RecyclerView recycler,recyclerAsso;
     public  ArrayList<User> users = new ArrayList<>();
+    public  ArrayList<Association> associations = new ArrayList<>();
     private ArrayList<String> usersList = new ArrayList<>();
     private ProgressBar progressBar;
-    private DatabaseReference currentUserRef,userMessageRef , userRef;
+    private DatabaseReference currentUserRef,userMessageRef , userRef , associationRef;
     String currentUserId;
     String txtUsername;
+    Button btnUtili,btnAsso;
+
+    boolean utilisateurClicked = true , associationClicked = false;
 
     private usersMessageAdapter usersMessageAdapter;
+    private AssociationMessageAdapter associationMessageAdapter;
     usersMessageAdapter.onUserClickListener onUserClickListener;
+    AssociationMessageAdapter.onAssociationClickListener onAssociationClickListener;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
@@ -50,16 +58,34 @@ public class MessageFragment extends Fragment {
 
 
         progressBar =(ProgressBar) view.findViewById(R.id.progressBar);
+        btnAsso = view.findViewById(R.id.btnAsso);
+        btnUtili = view.findViewById(R.id.btnUtilisateur);
+
+
+
+        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser",true);
+
+
         users = new ArrayList<>();
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
+         recyclerAsso = (RecyclerView) view.findViewById(R.id.recyclerAsso);
 
-        currentUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(
-                FirebaseAuth.getInstance().getCurrentUser().getUid()
-        );
+         if (MainActivity.isSimpleUser){
+
+             currentUserRef = FirebaseDatabase.getInstance().getReference().child("users").child(
+                     FirebaseAuth.getInstance().getCurrentUser().getUid()
+             );
+         }else {
+             currentUserRef = FirebaseDatabase.getInstance().getReference().child("association").child(
+                     FirebaseAuth.getInstance().getCurrentUser().getUid());
+         }
 
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        userMessageRef = FirebaseDatabase.getInstance().getReference().child("userMessages");
+        userMessageRef = FirebaseDatabase.getInstance().getReference().child("userMessagesRef");
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
+        associationRef = FirebaseDatabase.getInstance().getReference().child("association");
 
         currentUserRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -70,7 +96,6 @@ public class MessageFragment extends Fragment {
                     txtUsername = username;
 
 
-
                 }
             }
 
@@ -79,9 +104,6 @@ public class MessageFragment extends Fragment {
 
             }
         });
-
-        HomeActivity homeActivity = (HomeActivity) getActivity();
-
 
 
 
@@ -94,6 +116,7 @@ public class MessageFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getUsers();
+                getAssociations();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -114,17 +137,159 @@ public class MessageFragment extends Fragment {
 
         }
     };
-    getUsers();
+
+
+    onAssociationClickListener = new AssociationMessageAdapter.onAssociationClickListener() {
+        @Override
+        public void onAssociationClicked(int position) {
+            Intent i = new Intent(getActivity(), MessageActivity.class)
+
+                    .putExtra("nom_of_roommate1", associations.get(position).getUserName())
+                    .putExtra("email_of_roommate1",associations.get(position).getUid())
+
+                    ;
+            startActivity(i);
+        }
+    };
+
+        if (utilisateurClicked){
+            getUsers();
+        }else if (associationClicked){
+            getAssociations();
+        }
+
+        btnAsso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                getAssociations();
+
+                associationClicked = true;
+                utilisateurClicked = false;
+                recyclerAsso.setVisibility(View.VISIBLE);
+
+                recycler.setVisibility(View.GONE);
+
+                btnAsso.setBackgroundResource(R.drawable.selected_cat);
+                btnAsso.setTextColor(getResources().getColor(R.color.white));
+                btnUtili.setBackgroundResource(R.drawable.search_back);
+                btnUtili.setTextColor(getResources().getColor(R.color.black));
+
+
+            }
+        });
+        btnUtili.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                getUsers();
+                utilisateurClicked=true;
+                associationClicked=false;
+                recycler.setVisibility(View.VISIBLE);
+
+                recyclerAsso.setVisibility(View.GONE);
+
+                btnAsso.setBackgroundResource(R.drawable.search_back);
+                btnAsso.setTextColor(getResources().getColor(R.color.black));
+
+                btnUtili.setBackgroundResource(R.drawable.selected_cat);
+                btnUtili.setTextColor(getResources().getColor(R.color.white));
+
+
+            }
+        });
+
+
+
+
+
 
         return view;
 }
+
+    private void getAssociations() {
+
+        FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                String othersUid="";
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if (dataSnapshot != null){
+                        if (dataSnapshot.toString().contains(txtUsername)){
+
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                Message message = dataSnapshot1.getValue(Message.class);
+
+                                if (message.getSender()== FirebaseAuth.getInstance().getCurrentUser().getUid().toString()){
+                                    othersUid = dataSnapshot1.getValue(Message.class).getReceiver();
+                                    addUserToUserMessages(othersUid);
+                                }else if (message.getReceiver() == FirebaseAuth.getInstance().getCurrentUser().getUid().toString()){
+                                    othersUid = dataSnapshot1.getValue(Message.class).getSender();
+                                    addUserToUserMessages(othersUid);
+                                }
+
+
+                            }
+
+
+                        }
+                    }
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        userMessageRef.child(currentUserId).child("associationMessages").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                associations.clear();
+
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if (dataSnapshot.getValue(Association.class).getId()!=null){
+                        if (dataSnapshot.getValue(Association.class).getUid() != FirebaseAuth.getInstance().getCurrentUser().getUid()){
+                            associations.add(dataSnapshot.getValue(Association.class));
+                        }
+                    }
+                }
+
+
+                associationMessageAdapter = new AssociationMessageAdapter(associations,getContext(),onAssociationClickListener);
+                recyclerAsso.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerAsso.setAdapter(associationMessageAdapter);
+                progressBar.setVisibility(View.GONE);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+    }
+
     private void getUsers(){
 
         FirebaseDatabase.getInstance().getReference("messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usersList.clear();
-                String othersUid;
+                String othersUid="";
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     if (dataSnapshot != null){
                         if (dataSnapshot.toString().contains(txtUsername)){
@@ -159,7 +324,7 @@ public class MessageFragment extends Fragment {
             }
         });
 
-        FirebaseDatabase.getInstance().getReference("userMessages").child(currentUserId).addValueEventListener(new ValueEventListener() {
+        userMessageRef.child(currentUserId).child("userMessages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 users.clear();
@@ -175,7 +340,7 @@ public class MessageFragment extends Fragment {
                 recycler.setLayoutManager(new LinearLayoutManager(getContext()));
                 recycler.setAdapter(usersMessageAdapter);
                 progressBar.setVisibility(View.GONE);
-                recycler.setVisibility(View.VISIBLE);
+
 
             }
 
@@ -192,76 +357,231 @@ public class MessageFragment extends Fragment {
             }
 
     private void addUserToUserMessages(String othersUid) {
-        userRef.child(othersUid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    String myName = snapshot.child("userName").getValue().toString();
-                    String myNickName = snapshot.child("nickName").getValue().toString();
-                    String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
-                    String myLocalisation = snapshot.child("localisation").getValue().toString();
-                    String myPassword = snapshot.child("password").getValue().toString();
-                    String myUid = snapshot.child("Uid").getValue().toString();
 
-                    HashMap hashMap= new HashMap();
-                    hashMap.put("userName",myName);
-                    hashMap.put("phoneNumber",myPhoneNumber);
-                    hashMap.put("password",myPassword);
-                    hashMap.put("nickName",myNickName);
-                    hashMap.put("localisation",myLocalisation);
-                    hashMap.put("Uid",myUid);
 
-                    userMessageRef.child(currentUserId).child(othersUid).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
 
+            userRef.child(othersUid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+                        String myName = snapshot.child("userName").getValue().toString();
+                        String myNickName = snapshot.child("nickName").getValue().toString();
+                        String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                        String myLocalisation = snapshot.child("localisation").getValue().toString();
+                        String myPassword = snapshot.child("password").getValue().toString();
+                        String myUid = snapshot.child("Uid").getValue().toString();
+
+                        HashMap hashMap= new HashMap();
+                        hashMap.put("userName",myName);
+                        hashMap.put("phoneNumber",myPhoneNumber);
+                        hashMap.put("password",myPassword);
+                        hashMap.put("nickName",myNickName);
+                        hashMap.put("localisation",myLocalisation);
+                        hashMap.put("Uid",myUid);
+
+                        userMessageRef.child(currentUserId).child("userMessages").child(othersUid).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+
+                            }
+                        });
+
+
+                        if (currentUserId!=null){
+                            userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        String myName = snapshot.child("userName").getValue().toString();
+                                        String myNickName = snapshot.child("nickName").getValue().toString();
+                                        String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                                        String myLocalisation = snapshot.child("localisation").getValue().toString();
+                                        String myPassword = snapshot.child("password").getValue().toString();
+                                        String myUid = snapshot.child("Uid").getValue().toString();
+
+                                        HashMap hashMap= new HashMap();
+                                        hashMap.put("userName",myName);
+                                        hashMap.put("phoneNumber",myPhoneNumber);
+                                        hashMap.put("password",myPassword);
+                                        hashMap.put("nickName",myNickName);
+                                        hashMap.put("localisation",myLocalisation);
+                                        hashMap.put("Uid",myUid);
+
+                                        userMessageRef.child(othersUid).child("userMessages").child(currentUserId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                                            @Override
+                                            public void onComplete(@NonNull Task task) {
+
+                                            }
+                                        });
+
+
+                                    }else {
+                                        associationRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                String myName = snapshot.child("userName").getValue().toString();
+                                                String id = snapshot.child("id").getValue().toString();
+                                                String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                                                String myLocalisation = snapshot.child("localisation").getValue().toString();
+                                                String myPassword = snapshot.child("password").getValue().toString();
+                                                String myUid = snapshot.child("Uid").getValue().toString();
+
+                                                HashMap hashMap= new HashMap();
+                                                hashMap.put("userName",myName);
+                                                hashMap.put("phoneNumber",myPhoneNumber);
+                                                hashMap.put("password",myPassword);
+                                                hashMap.put("id",id);
+                                                hashMap.put("localisation",myLocalisation);
+                                                hashMap.put("Uid",myUid);
+
+                                                userMessageRef.child(othersUid).child("associationMessages").child(currentUserId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task task) {
+
+                                                    }
+                                                });
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
-                    });
 
+                    }else {
+                        associationRef.child(othersUid).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()){
+                                    String myName = snapshot.child("userName").getValue().toString();
+                                    String id = snapshot.child("id").getValue().toString();
+                                    String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                                    String myLocalisation = snapshot.child("localisation").getValue().toString();
+                                    String myPassword = snapshot.child("password").getValue().toString();
+                                    String myUid = snapshot.child("Uid").getValue().toString();
+
+                                    HashMap hashMap= new HashMap();
+                                    hashMap.put("userName",myName);
+                                    hashMap.put("phoneNumber",myPhoneNumber);
+                                    hashMap.put("password",myPassword);
+                                    hashMap.put("id",id);
+                                    hashMap.put("localisation",myLocalisation);
+                                    hashMap.put("Uid",myUid);
+
+                                    userMessageRef.child(currentUserId).child("associationMessages").child(othersUid).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                                        @Override
+                                        public void onComplete(@NonNull Task task) {
+
+                                        }
+                                    });
+
+                                    if (currentUserId!=null){
+                                        associationRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()){
+                                                    String myName = snapshot.child("userName").getValue().toString();
+                                                    String id = snapshot.child("id").getValue().toString();
+                                                    String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                                                    String myLocalisation = snapshot.child("localisation").getValue().toString();
+                                                    String myPassword = snapshot.child("password").getValue().toString();
+                                                    String myUid = snapshot.child("Uid").getValue().toString();
+
+                                                    HashMap hashMap= new HashMap();
+                                                    hashMap.put("userName",myName);
+                                                    hashMap.put("phoneNumber",myPhoneNumber);
+                                                    hashMap.put("password",myPassword);
+                                                    hashMap.put("id",id);
+                                                    hashMap.put("localisation",myLocalisation);
+                                                    hashMap.put("Uid",myUid);
+
+                                                    userMessageRef.child(othersUid).child("associationMessages").child(currentUserId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task task) {
+
+                                                        }
+                                                    });
+
+
+                                                }else {
+                                                    userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            String myName = snapshot.child("userName").getValue().toString();
+                                                            String myNickName = snapshot.child("nickName").getValue().toString();
+                                                            String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
+                                                            String myLocalisation = snapshot.child("localisation").getValue().toString();
+                                                            String myPassword = snapshot.child("password").getValue().toString();
+                                                            String myUid = snapshot.child("Uid").getValue().toString();
+
+                                                            HashMap hashMap= new HashMap();
+                                                            hashMap.put("userName",myName);
+                                                            hashMap.put("phoneNumber",myPhoneNumber);
+                                                            hashMap.put("password",myPassword);
+                                                            hashMap.put("nickName",myNickName);
+                                                            hashMap.put("localisation",myLocalisation);
+                                                            hashMap.put("Uid",myUid);
+
+                                                            userMessageRef.child(othersUid).child("userMessages").child(currentUserId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task task) {
+
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
+
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
+
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    String myName = snapshot.child("userName").getValue().toString();
-                    String myNickName = snapshot.child("nickName").getValue().toString();
-                    String myPhoneNumber = snapshot.child("phoneNumber").getValue().toString();
-                    String myLocalisation = snapshot.child("localisation").getValue().toString();
-                    String myPassword = snapshot.child("password").getValue().toString();
-                    String myUid = snapshot.child("Uid").getValue().toString();
-
-                    HashMap hashMap= new HashMap();
-                    hashMap.put("userName",myName);
-                    hashMap.put("phoneNumber",myPhoneNumber);
-                    hashMap.put("password",myPassword);
-                    hashMap.put("nickName",myNickName);
-                    hashMap.put("localisation",myLocalisation);
-                    hashMap.put("Uid",myUid);
-
-                    userMessageRef.child(othersUid).child(currentUserId).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-
-                        }
-                    });
+            });
 
 
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
 

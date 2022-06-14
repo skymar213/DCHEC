@@ -77,7 +77,9 @@ public class AssociationFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(getActivity(),MessageActivity.class)
-                                .putExtra("nom_of_roommate",model.getUserName())
+                                .putExtra("nom_of_roommate1",model.getUserName())
+                                .putExtra("email_of_roommate1",model.getUid())
+
                                 ;
                         startActivity(i);
                     }

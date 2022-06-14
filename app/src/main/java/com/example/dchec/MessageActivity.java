@@ -1,6 +1,7 @@
 package com.example.dchec;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,10 +45,17 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        MainActivity.isSimpleUser = MainActivity.sharedPreferences.getBoolean("isSimpleUser",true);
+
         if (SearchFragment.fromSearch){
-            usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate");
-            emailOfRoommate = getIntent().getStringExtra("email_of_roommate2");
+                usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate");
+                emailOfRoommate = getIntent().getStringExtra("email_of_roommate2");
             SearchFragment.fromSearch = false;
+        }else if (PostActivity.fromPost){
+            usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate3");
+            emailOfRoommate = getIntent().getStringExtra("email_of_roommate3");
+            PostActivity.fromPost = false;
         }else {
             usernameOfTheRoommate = getIntent().getStringExtra("nom_of_roommate1");
             emailOfRoommate = getIntent().getStringExtra("email_of_roommate1");
@@ -98,27 +106,52 @@ public class MessageActivity extends AppCompatActivity {
 
     private void setUpChatRoom(){
 
-        FirebaseDatabase.getInstance().getReference("users/"+ FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String myUsername = Objects.requireNonNull(snapshot.getValue(User.class)).getUserName();
-                if (usernameOfTheRoommate != null){
-                    if(usernameOfTheRoommate.compareTo(myUsername)>=0){
-                        chatRoomId = myUsername +  usernameOfTheRoommate;
-                    }else {
-                        chatRoomId = usernameOfTheRoommate + myUsername;
+        if (MainActivity.isSimpleUser){
+
+            FirebaseDatabase.getInstance().getReference("users/"+ FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String myUsername = Objects.requireNonNull(snapshot.getValue(User.class)).getUserName();
+                    if (usernameOfTheRoommate != null){
+                        if(usernameOfTheRoommate.compareTo(myUsername)>=0){
+                            chatRoomId = myUsername +  usernameOfTheRoommate;
+                        }else {
+                            chatRoomId = usernameOfTheRoommate + myUsername;
+                        }
+
+                        attachMessageListener(chatRoomId);
                     }
 
-                    attachMessageListener(chatRoomId);
                 }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }else {
+            FirebaseDatabase.getInstance().getReference("association/"+ FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String myUsername = Objects.requireNonNull(snapshot.getValue(Association.class)).getUserName();
+                    if (usernameOfTheRoommate != null){
+                        if(usernameOfTheRoommate.compareTo(myUsername)>=0){
+                            chatRoomId = myUsername +  usernameOfTheRoommate;
+                        }else {
+                            chatRoomId = usernameOfTheRoommate + myUsername;
+                        }
 
-            }
-        });
+                        attachMessageListener(chatRoomId);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
     }
 

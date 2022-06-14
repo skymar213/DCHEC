@@ -55,22 +55,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
 
         ConstraintLayout constraintLayout = holder.ccll;
 
-        if (messages.get(position).getSender().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+        if (messages.get(position).getSender().equals (FirebaseAuth.getInstance().getCurrentUser().getUid())){
             message.setBackgroundResource(R.drawable.my_msg_back);
             message.setTextColor(ContextCompat.getColor(context,white));
 
 
-
-
-            Glide.with(context).load(senderImg).error(R.drawable.profile_img).placeholder(R.drawable.profile_img).into(holder.profImage);
             ConstraintSet constraintSet = new ConstraintSet();
             constraintSet.clone(constraintLayout);
             constraintSet.clear(R.id.profile_cardView,ConstraintSet.LEFT);
             constraintSet.clear(R.id.txt_message_content,ConstraintSet.LEFT);
             constraintSet.connect(R.id.profile_cardView,ConstraintSet.RIGHT,R.id.ccLayout,ConstraintSet.RIGHT,0);
             constraintSet.connect(R.id.txt_message_content,ConstraintSet.RIGHT,R.id.profile_cardView,ConstraintSet.LEFT,0);
-            constraintSet.connect(R.id.txtSeen,ConstraintSet.TOP,R.id.txt_message_content,ConstraintSet.BOTTOM);
-            constraintSet.connect(R.id.txtSeen,ConstraintSet.RIGHT,R.id.txt_message_content,ConstraintSet.RIGHT);
             constraintSet.applyTo(constraintLayout);
 
         }else if (messages.get(position).getReceiver().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
@@ -78,15 +73,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             message.setTextColor(ContextCompat.getColor(context,black));
 
 
-            Glide.with(context).load(receiverImg).error(R.drawable.profile_img).placeholder(R.drawable.profile_img).into(holder.profImage);
             ConstraintSet constraintSet = new ConstraintSet();
             constraintSet.clone(constraintLayout);
             constraintSet.clear(R.id.profile_cardView,ConstraintSet.RIGHT);
             constraintSet.clear(R.id.txt_message_content,ConstraintSet.RIGHT);
             constraintSet.connect(R.id.profile_cardView,ConstraintSet.LEFT,R.id.ccLayout,ConstraintSet.LEFT,0);
             constraintSet.connect(R.id.txt_message_content,ConstraintSet.LEFT,R.id.profile_cardView,ConstraintSet.RIGHT,0);
-            constraintSet.connect(R.id.txtSeen,ConstraintSet.TOP,R.id.txt_message_content,ConstraintSet.BOTTOM);
-            constraintSet.connect(R.id.txtSeen,ConstraintSet.LEFT,R.id.txt_message_content,ConstraintSet.LEFT);
             constraintSet.applyTo(constraintLayout);
         }
 

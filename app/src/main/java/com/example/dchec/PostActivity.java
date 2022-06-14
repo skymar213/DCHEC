@@ -30,7 +30,8 @@ public class PostActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     String currentUserId ;
     DatabaseReference savedPostRef;
-    private String postKey,uid;
+    private String postKey,uid , uid1;
+    static Boolean fromPost=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class PostActivity extends AppCompatActivity {
 
         postKey = getIntent().getStringExtra("postKey");
         uid = getIntent().getStringExtra("uid");
+        uid1 = getIntent().getStringExtra("Uid");
         txtDescription = findViewById(R.id.txtDescription);
         postImg = findViewById(R.id.imgPostActivity);
         txtPoster = findViewById(R.id.txtPostPoster);
@@ -54,6 +56,11 @@ public class PostActivity extends AppCompatActivity {
         savingPost = findViewById(R.id.saving_post);
 
 
+        if (HisProfile.b){
+            btnContacter.setVisibility(View.GONE);
+        }else {
+            btnContacter.setVisibility(View.VISIBLE);
+        }
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +124,9 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PostActivity.this,MessageActivity.class);
-                intent.putExtra("nom_of_roommate",txtPoster.getText().toString());
+                intent.putExtra("nom_of_roommate3",txtPoster.getText().toString());
+                intent.putExtra("email_of_roommate3",uid1);
+                fromPost=true;
                 startActivity(intent);
             }
         });
