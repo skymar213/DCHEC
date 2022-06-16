@@ -25,7 +25,10 @@ public class usersSearchAdapter extends RecyclerView.Adapter<usersSearchAdapter.
         this.users = users;
         this.context = context;
         this.onUserSearchClickListener = onUserSearchClickListener;
+
     }
+
+
 
     interface onUserClickListener {
         void onUserClicked(int position);

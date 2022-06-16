@@ -10,7 +10,7 @@
     android:layout_marginBottom="10dp">
 
     <TextView
-        android:id="@+id/association_title_txt"
+        android:id="@+id/association_title_txt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -25,10 +25,10 @@
     </TextView>
 
     <TextView
-        android:id="@+id/association_name"
+        android:id="@+id/association_name1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/association_title_txt"
+        android:layout_below="@id/association_title_txt1"
         android:layout_marginStart="30dp"
         android:layout_marginTop="5dp"
         android:text="Association Askil"
@@ -39,10 +39,10 @@
     </TextView>
 
     <TextView
-        android:id="@+id/association_description"
+        android:id="@+id/association_description1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/association_name"
+        android:layout_below="@id/association_name1"
         android:layout_marginHorizontal="16dp"
         android:textSize="18sp"
         android:layout_marginTop="25dp"
@@ -56,7 +56,7 @@
         android:id="@+id/btnContacterAsso"
         android:layout_width="77dp"
         android:layout_height="24dp"
-        android:layout_below="@id/association_description"
+        android:layout_below="@id/association_description1"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="17dp"

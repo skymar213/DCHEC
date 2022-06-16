@@ -349,8 +349,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_info:
-                toolbar.setVisibility(View.GONE);
-                replaceFragment(new InfoFragment());
+                sendUserToAboutUsActivity();
                 break;
 
             case R.id.nav_home:
@@ -372,6 +371,11 @@ public class HomeActivity extends AppCompatActivity {
 
         drawerLayout.closeDrawer(GravityCompat.START);
 
+    }
+
+    private void sendUserToAboutUsActivity() {
+        Intent intent = new Intent(HomeActivity.this,AboutUs.class);
+        startActivity(intent);
     }
 
     private void sendUserToSavedPostsActivity() {

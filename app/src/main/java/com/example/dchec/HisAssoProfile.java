@@ -45,6 +45,8 @@ public class HisAssoProfile extends AppCompatActivity {
         clickedUid =getIntent().getStringExtra("uid");
         recyclerHisPost.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
 
+
+
         txtHisUsername = findViewById(R.id.txtYourUsernamePost);
         btnContacter = findViewById(R.id.btnContacter);
 
@@ -76,25 +78,19 @@ DisplayAllAssociationPosts();
 
             FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(FirebaseDatabase.getInstance().getReference().child("associationProfilePosts").child(clickedUid), Posts.class).build();
 
-            FirebaseRecyclerAdapter<Posts, HisProfile.UserPostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, HisProfile.UserPostViewHolder>(options) {
+            FirebaseRecyclerAdapter<Posts , HisProfile.UserPostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, HisProfile.UserPostViewHolder>(options)
+
+
+            {
                 @Override
                 protected void onBindViewHolder(@NonNull HisProfile.UserPostViewHolder holder, int position, @NonNull Posts model) {
 
-                    String postKey = getRef(position).getKey();
-
                     holder.setUserName(model.getUserName());
-                    holder.setPost_Image(model.getPostImage());
                     holder.setTitle(model.getTitle());
                     holder.setPrice(model.getPrice());
+                    holder.setPost_Image(model.getPostImage());
+;
 
-                    holder.mView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent clickPost = new Intent(HisAssoProfile.this, PostActivity.class);
-                            clickPost.putExtra("postKey", postKey);
-                            startActivity(clickPost);
-                        }
-                    });
 
 
                 }
@@ -102,15 +98,18 @@ DisplayAllAssociationPosts();
                 @NonNull
                 @Override
                 public HisProfile.UserPostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                    View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.posts_view_holder, parent, false);
+                    View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.posts_view_holder,parent,false);
                     return new HisProfile.UserPostViewHolder(view);
                 }
             };
+
 
             firebaseRecyclerAdapter.startListening();
             recyclerHisPost.setAdapter(firebaseRecyclerAdapter);
         }
     }
+
+
 
 
     @Override

@@ -6,45 +6,47 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logo"
+        android:icon="@drawable/logo_app"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dchec">
         <activity
+            android:name=".AboutUs"
+            android:exported="false"
+            android:parentActivityName=".HomeActivity"/>
+        <activity
             android:name=".AddPostActivity"
-            android:parentActivityName=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".PostActivity"
-            android:parentActivityName=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".MessageActivity"
-            android:parentActivityName=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HisProfile"
-            android:parentActivityName=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".MyPostActivty"
-            android:parentActivityName=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HisAssoProfile"
-            android:parentActivityName=".HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HomeActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan|adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustPan|adjustResize"></activity>
         <activity
             android:name=".ForgetPassword"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name=".setUpActivity"
             android:exported="true"
@@ -67,7 +69,6 @@
             android:name=".AccountActivity"
             android:exported="true"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name=".SavedPage"
             android:exported="true"

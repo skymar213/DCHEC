@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +18,6 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 public class AssociationFragment extends Fragment {
 
@@ -62,10 +59,7 @@ public class AssociationFragment extends Fragment {
 
         FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>().setQuery(postRef, Posts.class).build();
 
-        FirebaseRecyclerAdapter<Posts , PostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, PostViewHolder>(options)
-
-
-        {
+        FirebaseRecyclerAdapter<Posts , PostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, PostViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull Posts model) {
 
@@ -112,17 +106,17 @@ public class AssociationFragment extends Fragment {
         }
 
         public void setUser_Name(String user_Name){
-            TextView userName = mView.findViewById(R.id.association_name);
+            TextView userName = mView.findViewById(R.id.association_name1);
             userName.setText(user_Name);
         }
 
         public void setTitle(String title){
-            TextView userName = mView.findViewById(R.id.association_title_txt);
+            TextView userName = mView.findViewById(R.id.association_title_txt1);
             userName.setText(title);
         }
 
         public void setDescription(String description){
-            TextView associationDescription = mView.findViewById(R.id.association_description);
+            TextView associationDescription = mView.findViewById(R.id.association_description1);
             associationDescription.setText(description);
         }
 
